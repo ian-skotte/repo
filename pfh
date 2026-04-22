@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Benefits Orientation for New Members</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --brand-1: #005a8b;
+      --brand-2: #0077b6;
+      --brand-3: #00a6a6;
+      --brand-4: #e6f4fb;
+      --cta: #0b5cab;
+      --cta-hover: #084b8a;
+      --accent-bg: #fef3c7;
+      --accent-border: #fcd34d;
+      --accent-text: #78350f;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 999px;
+      --max-width: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--brand-2);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--brand-1), var(--brand-2), var(--brand-3));
+      color: #fff;
+      padding: 64px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      filter: blur(8px);
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.25rem, 4vw, 3.5rem);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin-top: 20px;
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .jump-links-wrap {
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+
+    .jump-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 18px 24px;
+    }
+
+    .jump-links a {
+      display: inline-block;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .jump-links a:hover,
+    .jump-links a:focus {
+      color: var(--brand-1);
+      text-decoration: none;
+      border-color: #7dd3fc;
+      background: #f8fcff;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: var(--cta);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background: #f3f9ff;
+      color: var(--cta-hover);
+      text-decoration: none;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #ffffff;
+      border-color: rgba(255,255,255,0.45);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus {
+      background: rgba(255,255,255,0.10);
+      text-decoration: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 32px;
+      padding: 40px 24px 56px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar h2 {
+      margin: 0 0 16px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+    }
+
+    .sidebar nav a {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a:focus {
+      background: var(--surface-alt);
+      color: var(--brand-1);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-card {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .section-card.featured {
+      border-color: #b6ddf2;
+      background: linear-gradient(180deg, #ffffff, #fbfeff);
+    }
+
+    .section-intro-tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--brand-4);
+      color: var(--brand-1);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .section-card h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.85rem;
+      line-height: 1.2;
+    }
+
+    .section-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+    }
+
+    .card-grid,
+    .bullet-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .mini-card,
+    .bullet-item {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface-alt);
+    }
+
+    .mini-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      line-height: 1.3;
+    }
+
+    .mini-card p,
+    .bullet-item {
+      margin: 0;
+      font-size: 0.97rem;
+      color: var(--muted);
+    }
+
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0;
+    }
+
+    .note {
+      margin-top: 20px;
+      padding: 16px 18px;
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius-md);
+      background: var(--accent-bg);
+      color: var(--accent-text);
+    }
+
+    .note strong {
+      color: #5b3708;
+    }
+
+    @media (max-width: 960px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 700px) {
+        .hero-visual,
+        .timeline,
+        .icon-grid,
+        .hero-summary-grid,
+        .resource-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 960px) {
+        .resource-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .jump-links {
+        padding: 16px 20px;
+      }
+
+      .layout {
+        padding: 28px 20px 44px;
+      }
+
+      .section-card {
+        padding: 22px;
+      }
+
+      .card-grid,
+      .bullet-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="eyebrow">Partners for Health • 2026 New Member Orientation</div>
+      <h1>Benefits Orientation for New Members</h1>
+      <p>Learn how your medical, pharmacy, dental, vision and other benefits work, and what to consider before you enroll.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#enrollment">How to enroll</a>
+        <a class="btn btn-secondary" href="#medical-options">Compare plans</a>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-illustration" aria-hidden="true">
+          <svg viewBox="0 0 720 360" width="100%" height="100%" role="img">
+            <rect x="0" y="0" width="720" height="360" rx="24" fill="rgba(255,255,255,0.08)"/>
+            <circle cx="102" cy="88" r="30" fill="#bfdbfe"/>
+            <rect x="62" y="128" width="82" height="112" rx="18" fill="#dbeafe"/>
+            <circle cx="230" cy="118" r="36" fill="#a7f3d0"/>
+            <rect x="180" y="164" width="98" height="120" rx="20" fill="#ccfbf1"/>
+            <circle cx="372" cy="96" r="28" fill="#fde68a"/>
+            <rect x="334" y="132" width="76" height="100" rx="18" fill="#fef3c7"/>
+            <rect x="472" y="72" width="178" height="208" rx="26" fill="#ffffff" opacity="0.92"/>
+            <rect x="500" y="106" width="120" height="14" rx="7" fill="#bfdbfe"/>
+            <rect x="500" y="136" width="98" height="12" rx="6" fill="#cbd5e1"/>
+            <rect x="500" y="160" width="110" height="12" rx="6" fill="#cbd5e1"/>
+            <rect x="500" y="200" width="54" height="54" rx="12" fill="#dbeafe"/>
+            <rect x="566" y="200" width="54" height="54" rx="12" fill="#ccfbf1"/>
+            <path d="M524 227h8v-14h12v14h8v10h-8v14h-12v-14h-8z" fill="#2563eb"/>
+            <path d="M590 227c0-8 6-14 14-14s14 6 14 14-6 14-14 14-14-6-14-14zm14-6a6 6 0 100 12 6 6 0 000-12z" fill="#0f766e"/>
+            <path d="M76 268h290" stroke="rgba(255,255,255,0.35)" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="138" cy="268" r="12" fill="#ffffff"/>
+            <circle cx="252" cy="268" r="12" fill="#ffffff"/>
+            <circle cx="366" cy="268" r="12" fill="#ffffff"/>
+          </svg>
+        </div>
+        <div class="hero-summary">
+          <div class="hero-summary-grid">
+            <div class="hero-stat"><strong>30 days</strong><span>to enroll as a new employee</span></div>
+            <div class="hero-stat"><strong>$0</strong><span>in-network preventive medical care</span></div>
+            <div class="hero-stat"><strong>4 levels</strong><span>of coverage to choose from</span></div>
+            <div class="hero-stat"><strong>4 networks</strong><span>across BCBS and Cigna</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="jump-links-wrap">
+    <div class="container jump-links">
+      <a href="#welcome">Welcome</a>
+      <a href="#about">About</a>
+      <a href="#plans">Plans</a>
+      <a href="#coverage-levels">Coverage Levels</a>
+      <a href="#medical-options">Medical Options</a>
+      <a href="#hsa">HSA</a>
+      <a href="#carriers-networks">Carriers &amp; Networks</a>
+      <a href="#telehealth">Telehealth</a>
+      <a href="#cost-terms">Cost Terms</a>
+      <a href="#pharmacy">Pharmacy</a>
+      <a href="#behavioral-health">Behavioral Health</a>
+      <a href="#dental">Dental</a>
+      <a href="#vision">Vision</a>
+      <a href="#life-disability">Life &amp; Disability</a>
+      <a href="#fsa">FSA</a>
+      <a href="#wellness">Wellness</a>
+      <a href="#enrollment">Enrollment</a>
+    </div>
+  </div>
+
+  <main class="container layout">
+    <style>
+      .hero-visual {
+        margin-top: 28px;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 22px;
+        align-items: center;
+      }
+
+      .hero-illustration,
+      .hero-summary {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        padding: 20px;
+        backdrop-filter: blur(6px);
+      }
+
+      .hero-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .hero-stat {
+        border-radius: 18px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .hero-stat strong {
+        display: block;
+        font-size: 1.2rem;
+        color: #fff;
+      }
+
+      .hero-stat span {
+        font-size: 0.92rem;
+        color: rgba(255,255,255,0.9);
+      }
+
+      .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .icon-card {
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: linear-gradient(180deg, #ffffff, #f8fbff);
+        text-align: center;
+      }
+
+      .icon-card svg {
+        filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.08));
+      }
+
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 22px;
+      }
+
+      .resource-card {
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: linear-gradient(180deg, #ffffff, #f8fbff);
+      }
+
+      .resource-card h3 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .resource-card p {
+        margin: 0 0 14px;
+        font-size: 0.95rem;
+      }
+
+      .resource-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        color: var(--cta);
+      }
+
+      .resource-link::after {
+        content: "→";
+      }
+
+      .icon-card svg {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 10px;
+      }
+
+      .icon-card h3 {
+        margin: 0 0 6px;
+        font-size: 1rem;
+      }
+
+      .icon-card p {
+        margin: 0;
+        font-size: 0.92rem;
+      }
+
+      .comparison-wrap {
+        margin-top: 22px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+
+      .comparison-head,
+      .comparison-row {
+        display: grid;
+        grid-template-columns: 1.2fr repeat(4, 1fr);
+      }
+
+      .comparison-head > div {
+        padding: 16px 14px;
+        background: #eaf3ff;
+        border-bottom: 1px solid var(--border);
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+
+      .comparison-row > div {
+        padding: 15px 14px;
+        border-bottom: 1px solid #e2e8f0;
+        border-right: 1px solid #e2e8f0;
+        font-size: 0.95rem;
+        color: var(--muted);
+        background: #fff;
+      }
+
+      .comparison-row > div:first-child {
+        font-weight: 700;
+        color: var(--text);
+        background: #f8fafc;
+      }
+
+      .comparison-row > div:last-child,
+      .comparison-head > div:last-child {
+        border-right: none;
+      }
+
+      .timeline {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .timeline-step {
+        position: relative;
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: linear-gradient(180deg, #ffffff, #f8fafc);
+      }
+
+      .timeline-step::before {
+        content: attr(data-step);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: var(--brand-2);
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 12px;
+      }
+
+      .timeline-step h3 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .timeline-step p {
+        margin: 0;
+        font-size: 0.94rem;
+      }
+
+      @media (max-width: 960px) {
+        .hero-visual,
+        .timeline,
+        .icon-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .comparison-head,
+        .comparison-row {
+          grid-template-columns: 1.2fr repeat(4, minmax(120px, 1fr));
+          min-width: 760px;
+        }
+
+        .comparison-wrap {
+          overflow-x: auto;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .hero-visual,
+        .timeline,
+        .icon-grid,
+        .hero-summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+    <aside class="sidebar" aria-label="Page navigation">
+      <h2>On this page</h2>
+      <nav>
+        <a href="#welcome">Welcome</a>
+        <a href="#about">About Partners for Health</a>
+        <a href="#plans">About the Plans</a>
+        <a href="#coverage-levels">Coverage Levels</a>
+        <a href="#medical-options">Medical Plan Options</a>
+        <a href="#hsa">Health Savings Account</a>
+        <a href="#carriers-networks">Carriers and Networks</a>
+        <a href="#telehealth">Telehealth</a>
+        <a href="#cost-terms">Key Cost Terms</a>
+        <a href="#pharmacy">Pharmacy Benefits</a>
+        <a href="#behavioral-health">Behavioral Health</a>
+        <a href="#dental">Dental</a>
+        <a href="#vision">Vision</a>
+        <a href="#life-disability">Life and Disability Insurance</a>
+        <a href="#fsa">Flexible Spending Accounts</a>
+        <a href="#wellness">Wellness and Support Programs</a>
+        <a href="#enrollment">Enrolling in Coverage</a>
+      </nav>
+    </aside>
+
+    <div class="content">
+      <section id="welcome" class="section-card">
+        <h2>Welcome</h2>
+        <p>Welcome to the 2026 Benefits Orientation for Partners for Health, the State of Tennessee’s group insurance program. This page is designed to help new members understand their options and make informed decisions about benefits.</p>
+      </section>
+
+      <section id="about" class="section-card">
+        <h2>About Partners for Health</h2>
+        <p>Benefits Administration, within the Department of Finance &amp; Administration, manages the State Group Insurance Program. Partners for Health is the official plan name for health plans administered by Benefits Administration.</p>
+        <p>You will see the Partners for Health name and logo on the website and in materials related to your benefits.</p>
+      </section>
+
+      <section id="plans" class="section-card">
+        <h2>About the Plans</h2>
+        <p>The health plan is self-insured. Claims are paid through member premiums and employer contributions.</p>
+        <p>The wellness program helps support healthy choices and may help reduce long-term costs for the plan.</p>
+        <div class="bullet-grid">
+          <div class="bullet-item">State Plan: Central state government and state higher education employees</div>
+          <div class="bullet-item">Local Education Plan: Classified and non-classified employees, plus school board members</div>
+          <div class="bullet-item">Local Government Plan: City and county employees, plus approved agencies</div>
+        </div>
+      </section>
+
+      <section id="coverage-levels" class="section-card">
+        <h2>Coverage Levels</h2>
+        <div class="bullet-grid">
+          <div class="bullet-item">Employee only</div>
+          <div class="bullet-item">Employee + spouse</div>
+          <div class="bullet-item">Employee + child or children</div>
+          <div class="bullet-item">Employee + spouse + children (family)</div>
+        </div>
+      </section>
+
+      <section id="medical-options" class="section-card">
+        <h2>Medical Plan Options</h2>
+        <p>All plan options cover the same broad services. The main differences are what you pay each month and what you pay when you receive care.</p>
+        <p>In-network preventive medical care is covered at $0 under every medical plan option.</p>
+        <div class="card-grid">
+          <div class="mini-card">
+            <h3>Premier PPO</h3>
+            <p>Higher monthly premium, but lower copays, deductible and coinsurance.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Standard PPO</h3>
+            <p>Lower monthly premium than Premier, but higher out-of-pocket costs when you use services.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Limited PPO</h3>
+            <p>Lower premium option with higher copays, deductible and coinsurance than Premier.</p>
+          </div>
+          <div class="mini-card">
+            <h3>CDHP / HSA</h3>
+            <p>Lower monthly premium with a health savings account. Preventive care is covered at $0 in-network, but most other costs are paid by the member until the deductible is met.</p>
+          </div>
+        </div>
+        <div class="comparison-wrap" aria-label="Medical plan comparison infographic">
+          <div class="comparison-head">
+            <div>Compare</div>
+            <div>Premier PPO</div>
+            <div>Standard PPO</div>
+            <div>Limited PPO</div>
+            <div>CDHP / HSA</div>
+          </div>
+          <div class="comparison-row">
+            <div>Monthly premium</div>
+            <div>Highest</div>
+            <div>Mid-range</div>
+            <div>Lower</div>
+            <div>Lowest</div>
+          </div>
+          <div class="comparison-row">
+            <div>Copays / deductible / coinsurance</div>
+            <div>Lowest</div>
+            <div>Higher</div>
+            <div>Higher</div>
+            <div>Member pays more upfront until deductible is met</div>
+          </div>
+          <div class="comparison-row">
+            <div>Preventive care in-network</div>
+            <div>$0</div>
+            <div>$0</div>
+            <div>$0</div>
+            <div>$0</div>
+          </div>
+          <div class="comparison-row">
+            <div>Best fit for</div>
+            <div>Members who want more predictable point-of-care costs</div>
+            <div>Members balancing premium and use costs</div>
+            <div>Members prioritizing lower monthly premium</div>
+            <div>Members comfortable saving and planning through an HSA</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="hsa" class="section-card">
+        <h2>Health Savings Account (HSA)</h2>
+        <p>TASC is the HSA vendor. If you enroll in the CDHP, the State of Tennessee automatically opens an HSA for you.</p>
+        <p>An HSA offers a triple tax advantage: contributions are tax-free, qualified withdrawals are tax-free and interest earned is tax-free.</p>
+        <p>Funds may be used for qualified medical expenses, including some vision, dental and hearing expenses.</p>
+        <div class="bullet-grid">
+          <div class="bullet-item">2026 contribution limits: $4,400 for employee-only coverage and $8,750 for all other coverage levels</div>
+          <div class="bullet-item">State seed funds: $500 for employee-only coverage and $1,000 for other coverage levels</div>
+          <div class="bullet-item">Funds can be invested once the account reaches $1,100</div>
+          <div class="bullet-item">After age 65, funds may be used for non-medical expenses, but those withdrawals are taxable</div>
+        </div>
+        <div class="note"><strong>Important:</strong> HSA eligibility is limited by IRS rules. You generally cannot contribute if you are enrolled in Medicare, Medicaid, Tricare, VA benefits or another traditional health plan/FSA that makes you ineligible.</div>
+      </section>
+
+      <section id="carriers-networks" class="section-card">
+        <h2>Carriers and Networks</h2>
+        <p>The carrier administers the network. Your costs and benefits are generally the same regardless of carrier, though there may be small differences in medical policies.</p>
+        <p>Expanded networks such as BCBS Network P and Cigna Open Access Plus have an added premium surcharge and may also lead to higher service costs.</p>
+        <p>Once you enroll in a network, you cannot switch mid-year just because a provider leaves the network.</p>
+        <div class="card-grid">
+          <div class="mini-card">
+            <h3>BlueCross BlueShield of Tennessee</h3>
+            <p>Choose Network S or Network P.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Cigna</h3>
+            <p>Choose LocalPlus or Open Access Plus.</p>
+          </div>
+        </div>
+        <div class="note"><strong>Important:</strong> Check provider and hospital participation before you enroll.</div>
+      </section>
+
+      <section id="telehealth" class="section-card">
+        <h2>Telehealth</h2>
+        <p>Telehealth is included with medical coverage through both BCBS and Cigna.</p>
+        <p>It is available 24/7 for non-emergency issues such as colds, sore throats and earaches.</p>
+        <p>PPO members pay a $15 copay. CDHP members pay the negotiated rate until they meet the deductible, then office visit coinsurance applies.</p>
+      </section>
+
+      <section id="cost-terms" class="section-card">
+        <h2>Key Cost Terms</h2>
+        <p>Use the benefit comparison chart on the Partners for Health website to compare office visits, prescriptions, deductible amounts, coinsurance and maximum out-of-pocket costs.</p>
+        <div class="card-grid">
+          <div class="mini-card"><h3>Premium</h3><p>The amount you pay each month for coverage, whether or not you use services.</p></div>
+          <div class="mini-card"><h3>Copay</h3><p>A flat dollar amount you pay for certain services.</p></div>
+          <div class="mini-card"><h3>Coinsurance</h3><p>The percentage of the cost you pay for certain services.</p></div>
+          <div class="mini-card"><h3>Deductible</h3><p>The amount you pay before the plan begins paying for certain services.</p></div>
+          <div class="mini-card"><h3>Maximum out-of-pocket</h3><p>The most you will pay in a year for eligible services. This does not include premiums.</p></div>
+        </div>
+      </section>
+
+      <section id="pharmacy" class="section-card">
+        <h2>Pharmacy Benefits</h2>
+        <p>Pharmacy benefits are managed by CVS Caremark and are combined with your medical coverage.</p>
+        <p>You are not limited to CVS stores. A full list of in-network pharmacies is available on the Partners for Health website.</p>
+        <p>Your prescription costs depend on the health plan you choose, where you fill the prescription, the days supply and the drug tier.</p>
+        <div class="note"><strong>Important:</strong> Specialty medications are 30% coinsurance for PPO members. CDHP members pay full cost until the deductible is met, then 30% coinsurance applies.</div>
+      </section>
+
+      <section id="behavioral-health" class="section-card">
+        <h2>Behavioral Health</h2>
+        <p>Behavioral health benefits are administered by Optum Behavioral Health and are available to members and dependents enrolled in medical coverage.</p>
+        <p>Benefits include outpatient therapy, inpatient treatment, medication management and substance use disorder services.</p>
+        <p>Virtual visits are available, and the cost is the same as an office visit.</p>
+        <p>Talkspace offers text, audio and video therapy within a secure app. PPO copay is $15.</p>
+        <p>The Calm app offers coping tools, meditation and personalized content through Here4TN.com.</p>
+        <div class="note"><strong>Important:</strong> There is no separate premium, deductible or maximum out-of-pocket for behavioral health benefits.</div>
+      </section>
+
+      <section id="dental" class="section-card">
+        <h2>Dental</h2>
+        <p>The DHMO has no annual deductible or annual maximum benefit.</p>
+        <p>The DPPO has an annual deductible and a $1,500 annual maximum per person, per policy year.</p>
+        <div class="card-grid">
+          <div class="mini-card">
+            <h3>Cigna DHMO</h3>
+            <p>Lower monthly premium with fixed copays. Members must use participating Cigna network general dentists.</p>
+          </div>
+          <div class="mini-card">
+            <h3>MetLife DPPO</h3>
+            <p>Higher monthly premium with coinsurance. Any dentist can be used, but in-network providers cost less.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="vision" class="section-card">
+        <h2>Vision</h2>
+        <p>EyeMed manages vision coverage for 2026.</p>
+        <p>Additional discounts are available for prescription glasses, non-covered items and LASIK/PRK services.</p>
+        <div class="card-grid">
+          <div class="mini-card">
+            <h3>Basic Plan</h3>
+            <p>Eye exam with a $10 copay and materials allowances. Frames are covered once every two calendar years.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Expanded Plan</h3>
+            <p>Annual eye exam with a $0 copay and greater allowances. Frames are covered once every calendar year.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="life-disability" class="section-card">
+        <h2>Life and Disability Insurance</h2>
+        <p>State and higher education employees may have access to group term life, accidental death and dismemberment insurance, and disability insurance.</p>
+        <p>Basic term life and basic AD&amp;D are funded by the state and cannot be waived.</p>
+        <p>Voluntary term life and voluntary AD&amp;D are also available, with enrollment deadlines and eligibility rules.</p>
+        <p>MetLife manages short-term and long-term disability benefits.</p>
+        <div class="note"><strong>Important:</strong> These benefits apply only to State and Higher Education employees.</div>
+      </section>
+
+      <section id="fsa" class="section-card">
+        <h2>Flexible Spending Accounts (State and Higher Education only)</h2>
+        <div class="card-grid">
+          <div class="mini-card">
+            <h3>Medical FSA</h3>
+            <p>Lets you pay eligible health care expenses with pretax dollars. Not available if you enroll in the CDHP/HSA plan.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Limited Purpose FSA</h3>
+            <p>Available with the CDHP/HSA plan for eligible dental and vision expenses.</p>
+          </div>
+          <div class="mini-card">
+            <h3>Dependent Care FSA</h3>
+            <p>Helps pay for qualified child care or adult dependent care expenses with pretax dollars.</p>
+          </div>
+        </div>
+        <div class="bullet-grid">
+          <div class="bullet-item">Medical and Limited Purpose FSA annual contribution limit for 2026: $3,300</div>
+          <div class="bullet-item">Up to $660 may carry over to the next plan year for eligible FSAs</div>
+          <div class="bullet-item">Dependent Care FSA contribution limit: up to $7,500 per household per year</div>
+        </div>
+      </section>
+
+      <section id="benefit-icons" class="section-card featured">
+        <div class="section-intro-tag">Quick guide</div>
+        <h2>Benefits at a Glance</h2>
+        <p>These quick icons help highlight the main benefit categories available through Partners for Health.</p>
+        <div class="icon-grid">
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="14" width="44" height="36" rx="10" fill="#dbeafe"/><path d="M28 22h8v10h10v8H36v10h-8V40H18v-8h10z" fill="#2563eb"/></svg>
+            <h3>Medical</h3>
+            <p>PPO and CDHP/HSA options with preventive care covered in-network at $0.</p>
+          </div>
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M18 18h28a6 6 0 016 6v16a14 14 0 01-14 14h-4A20 20 0 0114 34V22a4 4 0 014-4z" fill="#ccfbf1"/><path d="M24 28c0-4 3-7 8-7s8 3 8 7-3 7-8 7-8-3-8-7zm6 16h4" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/></svg>
+            <h3>Dental</h3>
+            <p>Choose between a lower-premium DHMO or a broader-network DPPO option.</p>
+          </div>
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="20" fill="#ede9fe"/><circle cx="32" cy="32" r="8" fill="#7c3aed"/><path d="M12 32h8m24 0h8M32 12v8m0 24v8" stroke="#7c3aed" stroke-width="4" stroke-linecap="round"/></svg>
+            <h3>Vision</h3>
+            <p>EyeMed basic and expanded plans, plus discounts on eyewear and services.</p>
+          </div>
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="20" width="40" height="24" rx="12" fill="#fee2e2"/><path d="M26 20v24" stroke="#dc2626" stroke-width="4"/><path d="M20 32h12" stroke="#dc2626" stroke-width="4"/><circle cx="42" cy="32" r="6" fill="#fff" stroke="#dc2626" stroke-width="4"/></svg>
+            <h3>Pharmacy</h3>
+            <p>CVS Caremark manages prescription coverage across in-network pharmacies.</p>
+          </div>
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 52s-16-9.5-16-23a9 9 0 0116-5 9 9 0 0116 5c0 13.5-16 23-16 23z" fill="#fecdd3"/><path d="M32 52s-16-9.5-16-23a9 9 0 0116-5 9 9 0 0116 5c0 13.5-16 23-16 23z" fill="none" stroke="#db2777" stroke-width="3"/></svg>
+            <h3>Behavioral Health</h3>
+            <p>Counseling, virtual visits, Talkspace and other support resources.</p>
+          </div>
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="14" width="40" height="36" rx="10" fill="#d1fae5"/><path d="M22 34l7 7 14-18" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3>Wellness</h3>
+            <p>Sharecare programs, wellness resources and possible incentive opportunities.</p>
+          </div>
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="12" width="36" height="40" rx="8" fill="#dbeafe"/><path d="M22 24h20M22 32h20M22 40h12" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round"/></svg>
+            <h3>Enrollment</h3>
+            <p>New employees generally have 30 days to make benefit elections and add dependents.</p>
+          </div>
+          <div class="icon-card">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="22" r="10" fill="#fde68a"/><path d="M16 52c2-10 10-16 16-16s14 6 16 16" fill="#fef3c7" stroke="#ca8a04" stroke-width="3"/></svg>
+            <h3>Support</h3>
+            <p>Use your agency benefits coordinator and Partners for Health resources for guidance.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="wellness" class="section-card">
+        <h2>Wellness and Support Programs</h2>
+        <p>These programs offer support for physical health, emotional well-being, disease management, counseling, surgery and cancer care navigation, and employee discounts.</p>
+        <div class="bullet-grid">
+          <div class="bullet-item">Sharecare wellness program</div>
+          <div class="bullet-item">RealAge Test and wellness incentives for eligible members</div>
+          <div class="bullet-item">Emotional Wellbeing Solutions (EWS) through Optum</div>
+          <div class="bullet-item">Carrum Health Centers of Excellence</div>
+          <div class="bullet-item">Employee Discount Program</div>
+          <div class="bullet-item">Working for a Healthier Tennessee (State employees only)</div>
+        </div>
+      </section>
+
+      <section id="enrollment" class="section-card featured">
+        <div class="section-intro-tag">Start here</div>
+        <h2>Enrolling in Coverage</h2>
+        <p>As a new employee, you have 30 days from your hire date to elect benefits. Day 1 counts toward the 30-day deadline.</p>
+        <p>Your agency benefits coordinator will tell you how to enroll, usually through Employee Self-Service (ESS) or, if allowed by your agency, by paper form.</p>
+        <p>If you enroll dependents, you must provide dependent verification documents during enrollment.</p>
+        <div class="timeline" aria-label="Enrollment timeline infographic">
+          <div class="timeline-step" data-step="1">
+            <h3>Review your options</h3>
+            <p>Compare medical, dental, vision and any other benefits available to you.</p>
+          </div>
+          <div class="timeline-step" data-step="2">
+            <h3>Choose who to cover</h3>
+            <p>Select your coverage level and decide whether you are enrolling dependents.</p>
+          </div>
+          <div class="timeline-step" data-step="3">
+            <h3>Gather documents</h3>
+            <p>Collect any required dependent verification before you start enrollment.</p>
+          </div>
+          <div class="timeline-step" data-step="4">
+            <h3>Enroll within 30 days</h3>
+            <p>Submit your elections on time through ESS or your agency’s approved process.</p>
+          </div>
+        </div>
+        <div class="bullet-grid">
+          <div class="bullet-item">Spouse: marriage certificate, plus an additional document if married more than 12 months</div>
+          <div class="bullet-item">Dependent children: birth certificates</div>
+          <div class="bullet-item">Stepchildren: marriage verification and birth certificate or legal relationship document</div>
+        </div>
+        <div class="note"><strong>Important:</strong> A full list of acceptable documents is available on the Partners for Health website.</div>
+        <div class="resource-grid" aria-label="Helpful resources">
+          <div class="resource-card">
+            <h3>Benefit comparison chart</h3>
+            <p>Use this resource to compare plan costs, deductibles, copays and out-of-pocket limits before you enroll.</p>
+            <a class="resource-link" href="#cost-terms">View comparison details</a>
+          </div>
+          <div class="resource-card">
+            <h3>Carrier and network choices</h3>
+            <p>Review the BCBS and Cigna network options and check provider participation before making a selection.</p>
+            <a class="resource-link" href="#carriers-networks">Review networks</a>
+          </div>
+          <div class="resource-card">
+            <h3>Dependent verification checklist</h3>
+            <p>Make sure you have the right documents ready if you plan to enroll a spouse, child or stepchild.</p>
+            <a class="resource-link" href="#enrollment">See document list</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
