@@ -1,0 +1,1882 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026 Health Insurance Comparison Tool</title>
+<style>
+:root {
+  --teal: #0d6488;
+  --teal-dark: #094d6a;
+  --teal-mid: #75a7c4;
+  --bg: #eeeeee;
+  --panel: #f6f6f6;
+  --white: #ffffff;
+  --text: #263238;
+  --muted: #71808d;
+  --border: #cfd6dc;
+  --line: #d8dde2;
+  --success: #96c43d;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text);
+  background: #e9ebee;
+}
+.site-shell {
+  max-width: 1140px;
+  margin: 0 auto;
+  background: var(--bg);
+  min-height: 100vh;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.hero {
+  background: var(--teal);
+  color: #fff;
+  padding: 20px 0 0;
+}
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0 36px 16px;
+}
+.brand h1 {
+  margin: 8px 0 2px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.7rem;
+  line-height: 1.02;
+  letter-spacing: -.02em;
+}
+.brand p {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.hero-actions button {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-weight: 800;
+  font-size: .9rem;
+  letter-spacing: .04em;
+  cursor: pointer;
+}
+.hero-note {
+  padding: 0 36px 18px;
+  font-weight: 700;
+  font-size: 1.35rem;
+}
+.tabs {
+  display: flex;
+  gap: 10px;
+  padding: 0 36px;
+  overflow-x: auto;
+}
+.tab {
+  display: inline-block;
+  min-width: 150px;
+  text-align: center;
+  background: var(--teal-mid);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: .9rem;
+  letter-spacing: .05em;
+  padding: 18px 14px;
+}
+.tab.active {
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+}
+.tab.active::after {
+  content: "";
+  position: absolute;
+  left: 40px;
+  bottom: -26px;
+  width: 0;
+  height: 0;
+  border-left: 26px solid transparent;
+  border-right: 26px solid transparent;
+  border-top: 26px solid var(--bg);
+}
+.workspace {
+  padding: 70px 36px 40px;
+}
+.workspace-header {
+  margin-bottom: 26px;
+}
+.workspace-header h2 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  color: #33424d;
+}
+.workspace-header p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.setup-grid {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 34px;
+  align-items: start;
+}
+.panel-divider {
+  border-left: 1px solid #d1d6db;
+  padding-left: 34px;
+}
+.form-section h3 {
+  margin: 0 0 18px;
+  font-size: 1.25rem;
+  color: #3c4b56;
+}
+.field { margin-bottom: 22px; }
+.field-row-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: #4a5964;
+  font-size: 1.05rem;
+}
+.label-note {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: .9rem;
+}
+select, input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #c6ccd2;
+  border-radius: 4px;
+  padding: 10px 12px;
+  background: #f8f8f8;
+  color: #495662;
+  font-size: 1rem;
+}
+.readonly-box {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #c6ccd2;
+  border-radius: 4px;
+  padding: 10px 12px;
+  background: #f8f8f8;
+  color: #8d98a2;
+  display: flex;
+  align-items: center;
+}
+.readonly-box.highlight {
+  border-color: var(--success);
+  background: #fafdf5;
+  color: #384852;
+}
+.helper {
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: .92rem;
+}
+.contribution-block {
+  border: 1px solid #d5d9de;
+  background: #f2f4f6;
+  padding: 16px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+.hidden { display: none !important; }
+.primary-btn, .secondary-btn {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 4px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  cursor: pointer;
+}
+.primary-btn {
+  background: #bfc3c7;
+  color: #fff;
+}
+.primary-btn.enabled {
+  background: var(--teal);
+}
+.secondary-btn {
+  background: #dfe4e8;
+  color: #4d5b66;
+}
+.quick-results,
+.plan-chooser,
+.comparison-results,
+.plan-cards,
+.definitions,
+.disclaimer {
+  margin-top: 34px;
+}
+.section-card {
+  background: #f2f2f2;
+  border: 1px solid #d8dde2;
+  padding: 22px;
+}
+.section-card h3 {
+  margin: 0 0 16px;
+  font-size: 1.32rem;
+  color: #3a4a55;
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.summary-box {
+  background: #fff;
+  border: 1px solid #d6dbe0;
+  padding: 16px;
+  min-height: 140px;
+}
+.summary-box .eyebrow {
+  display: block;
+  color: #89949d;
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.summary-box strong {
+  display: block;
+  font-size: 1.1rem;
+  color: #2f404b;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.summary-box span,
+.summary-box p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.4;
+  font-size: .92rem;
+}
+.plan-select-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.plan-slot {
+  background: #fff;
+  border: 1px solid #d6dbe0;
+  padding: 16px;
+}
+.plan-slot p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.4;
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.plan-card {
+  background: #fff;
+  border: 1px solid #d6dbe0;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.plan-card.is-lowest {
+  border-color: var(--success);
+  box-shadow: inset 0 0 0 1px var(--success);
+}
+.plan-card h4 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #344652;
+}
+.plan-card .sub {
+  margin: -4px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: .92rem;
+}
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.badge {
+  background: #edf7ea;
+  color: #4c6f16;
+  border: 1px solid #cfe2b2;
+  padding: 4px 8px;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+.metric {
+  border-top: 1px solid #e2e6ea;
+  padding-top: 10px;
+}
+.metric-label {
+  color: #86919b;
+  font-size: .86rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 4px;
+}
+.metric-value {
+  color: #344652;
+  font-size: 1.26rem;
+  font-weight: 700;
+}
+details {
+  border-top: 1px solid #e2e6ea;
+  padding-top: 12px;
+  margin-top: auto;
+}
+summary {
+  cursor: pointer;
+  font-weight: 800;
+  color: #38505f;
+}
+.detail-grid { margin-top: 10px; }
+.detail-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid #e6eaee;
+}
+.detail-row span:first-child { color: var(--muted); }
+.detail-row strong {
+  color: #31414d;
+  text-align: right;
+}
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+th, td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #dfe4e8;
+  text-align: left;
+  vertical-align: top;
+}
+th {
+  background: #edf1f4;
+  color: #44535d;
+  font-size: .94rem;
+}
+.lowest-cell {
+  color: #4c6f16;
+  font-weight: 900;
+}
+.definition-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.info-card {
+  background: #fff;
+  border: 1px solid #d6dbe0;
+  padding: 16px;
+}
+.info-card h4 {
+  margin: 0 0 8px;
+  color: #364652;
+}
+.info-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: .94rem;
+}
+.disclaimer p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+@media (max-width: 980px) {
+  .setup-grid,
+  .summary-grid,
+  .plan-select-grid,
+  .cards-grid,
+  .definition-grid {
+    grid-template-columns: 1fr;
+  }
+  .panel-divider {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .field-row-two {
+    grid-template-columns: 1fr;
+  }
+  .hero-top {
+    flex-direction: column;
+  }
+  .hero-actions {
+    justify-content: flex-start;
+  }
+  .workspace {
+    padding: 54px 20px 32px;
+  }
+  .tabs {
+    padding: 0 20px;
+  }
+  .hero-top,
+  .hero-note {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="site-shell">
+  <header class="hero">
+    <div class="hero-top">
+      <div class="brand">
+        <h1>Partners for Health™</h1>
+        <p>Interactive Health Plan Comparison Simulator</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" id="startOverTop">↻ START OVER</button>
+        <button type="button" id="saveShareTop">SAVE &amp; SHARE</button>
+      </div>
+    </div>
+    <div class="hero-note">New Comparison</div>
+    <nav class="tabs" aria-label="Tool sections">
+      <a class="tab active" href="#setupSection">GET STARTED</a>
+      <a class="tab" href="#quickResultsSection">QUICK RESULTS</a>
+      <a class="tab" href="#planChooserSection">PLAN OPTIONS</a>
+      <a class="tab" href="#comparisonSection">COMPARE</a>
+      <a class="tab" href="#detailsSection">DETAILS</a>
+    </nav>
+  </header>
+
+  <main class="workspace">
+    <section class="workspace-header">
+      <h2>Set-Up</h2>
+      <p>Choose your employee group and coverage level, then review your estimated health plan costs side by side.</p>
+    </section>
+
+    <section class="setup-grid" id="setupSection">
+      <div class="left-panel form-section">
+        <h3>Coverage selections</h3>
+
+        <div class="field">
+          <label for="entity">Employee Group <span class="label-note">Select your employee type</span></label>
+          <select id="entity">
+            <option value="">Select employee group</option>
+            <option>State/Higher Education</option>
+            <option>Local Education</option>
+            <option>Local Government</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="coverage">Coverage Level <span class="label-note">Choose who needs coverage</span></label>
+          <select id="coverage">
+            <option>Employee Only</option>
+            <option>Employee + Child(ren)</option>
+            <option>Employee + Spouse</option>
+            <option>Employee + Spouse + Child(ren)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="comparisonFocus">Comparison Focus <span class="label-note">Optional view preference</span></label>
+          <select id="comparisonFocus">
+            <option value="balanced">Balanced view</option>
+            <option value="monthly">Emphasize monthly cost</option>
+            <option value="annual">Emphasize annual high-use cost</option>
+          </select>
+        </div>
+
+        <div class="contribution-block hidden" id="contributionPanel">
+          <div class="field">
+            <label for="contributionMode">Agency Contribution</label>
+            <select id="contributionMode">
+              <option value="default">Use available employer contribution</option>
+              <option value="percent">Agency pays a percentage</option>
+              <option value="dollar">Agency pays a dollar amount</option>
+            </select>
+          </div>
+          <div class="field" id="customContributionWrap">
+            <label for="customContribution">Contribution Amount</label>
+            <input id="customContribution" type="number" min="0" step="0.01" value="50">
+          </div>
+          <p class="helper" id="contributionMessage">Agency contributions may vary. Enter what your agency pays to estimate the employee monthly cost.</p>
+        </div>
+      </div>
+
+      <div class="right-panel panel-divider form-section">
+        <h3>Live snapshot</h3>
+
+        <div class="field-row-two">
+          <div class="field">
+            <label>Selected group</label>
+            <div class="readonly-box highlight" id="snapshotGroup">State/Higher Education</div>
+          </div>
+          <div class="field">
+            <label>Selected coverage</label>
+            <div class="readonly-box" id="snapshotCoverage">Employee Only</div>
+          </div>
+        </div>
+
+        <div class="field-row-two">
+          <div class="field">
+            <label>Lowest monthly cost</label>
+            <div class="readonly-box" id="snapshotMonthly">$0.00</div>
+          </div>
+          <div class="field">
+            <label>Lowest annual high-use cost</label>
+            <div class="readonly-box" id="snapshotAnnual">$0.00</div>
+          </div>
+        </div>
+
+        <div class="field-row-two">
+          <div class="field">
+            <label>Selected plans</label>
+            <div class="readonly-box" id="snapshotPlans">3</div>
+          </div>
+          <div class="field">
+            <label>Contribution mode</label>
+            <div class="readonly-box" id="snapshotMode">Automatic</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <button type="button" class="primary-btn enabled" id="goToResults">NEXT</button>
+        </div>
+        <div class="field">
+          <button type="button" class="secondary-btn" id="startOverMain">START OVER</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-results" id="quickResultsSection">
+      <div class="section-card">
+        <h3>Quick Results</h3>
+        <div class="summary-grid" id="quickResults"></div>
+      </div>
+    </section>
+
+    <section class="plan-chooser" id="planChooserSection">
+      <div class="section-card">
+        <h3>Choose Health Plans</h3>
+        <div class="plan-select-grid" id="planButtons"></div>
+      </div>
+    </section>
+
+    <section class="plan-cards" id="comparisonSection">
+      <div class="cards-grid" id="cards"></div>
+    </section>
+
+    <section class="comparison-results" id="detailsSection">
+      <div class="section-card">
+        <h3>Full Comparison</h3>
+        <div class="table-wrap" id="tableWrap"></div>
+      </div>
+    </section>
+
+    <section class="definitions">
+      <div class="definition-grid">
+        <article class="info-card">
+          <h4>Premium</h4>
+          <p>The regular cost of health coverage. In this tool, the employee monthly cost is an estimate after the employer or agency contribution is applied.</p>
+        </article>
+        <article class="info-card">
+          <h4>Deductible</h4>
+          <p>The amount you pay for certain covered medical services before the plan starts paying. Some services may be covered before the deductible is met.</p>
+        </article>
+        <article class="info-card">
+          <h4>Out-of-pocket maximum</h4>
+          <p>The most you would pay for covered in-network medical costs during the plan year, not including premiums.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="disclaimer">
+      <div class="section-card">
+        <h3>Important note</h3>
+        <p>This tool is for health plan comparison only. It does not replace official plan documents, agency benefits coordinator guidance or payroll confirmation. Local Education and Local Government estimates depend on the contribution amount entered. Premiums, deductibles and out-of-pocket maximums are based on the uploaded 2026 Partners for Health comparison spreadsheets.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const healthData = {
+  "Local Government": {
+    "type": "health",
+    "plans": {
+      "PREMIER PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 904,
+          "Employee + Child(ren)": 1402,
+          "Employee + Spouse": 2080,
+          "Employee + Spouse + Child(ren)": 2444
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 994,
+          "Employee + Child(ren)": 1502,
+          "Employee + Spouse": 2260,
+          "Employee + Spouse + Child(ren)": 2624
+        }
+      },
+      "STANDARD PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 832,
+          "Employee + Child(ren)": 1290,
+          "Employee + Spouse": 1914,
+          "Employee + Spouse + Child(ren)": 2249
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 922,
+          "Employee + Child(ren)": 1390,
+          "Employee + Spouse": 2094,
+          "Employee + Spouse + Child(ren)": 2429
+        }
+      },
+      "LIMITED PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 675,
+          "Employee + Child(ren)": 1048,
+          "Employee + Spouse": 1554,
+          "Employee + Spouse + Child(ren)": 1826
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 765,
+          "Employee + Child(ren)": 1148,
+          "Employee + Spouse": 1734,
+          "Employee + Spouse + Child(ren)": 2006
+        }
+      },
+      "CDHP/HSA": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 624,
+          "Employee + Child(ren)": 967,
+          "Employee + Spouse": 1434,
+          "Employee + Spouse + Child(ren)": 1685
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 714,
+          "Employee + Child(ren)": 1067,
+          "Employee + Spouse": 1614,
+          "Employee + Spouse + Child(ren)": 1865
+        }
+      }
+    }
+  },
+  "Local Education": {
+    "type": "health",
+    "plans": {
+      "PREMIER PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 793,
+          "Employee + Child(ren)": 1307,
+          "Employee + Spouse": 1783,
+          "Employee + Spouse + Child(ren)": 2060
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 883,
+          "Employee + Child(ren)": 1407,
+          "Employee + Spouse": 1963,
+          "Employee + Spouse + Child(ren)": 2240
+        }
+      },
+      "STANDARD PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 736,
+          "Employee + Child(ren)": 1214,
+          "Employee + Spouse": 1656,
+          "Employee + Spouse + Child(ren)": 1914
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 826,
+          "Employee + Child(ren)": 1314,
+          "Employee + Spouse": 1836,
+          "Employee + Spouse + Child(ren)": 2094
+        }
+      },
+      "LIMITED PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 695,
+          "Employee + Child(ren)": 1146,
+          "Employee + Spouse": 1565,
+          "Employee + Spouse + Child(ren)": 1807
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 785,
+          "Employee + Child(ren)": 1246,
+          "Employee + Spouse": 1745,
+          "Employee + Spouse + Child(ren)": 1987
+        }
+      },
+      "CDHP/HSA": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 607,
+          "Employee + Child(ren)": 1001,
+          "Employee + Spouse": 1365,
+          "Employee + Spouse + Child(ren)": 1578
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 697,
+          "Employee + Child(ren)": 1101,
+          "Employee + Spouse": 1545,
+          "Employee + Spouse + Child(ren)": 1758
+        }
+      }
+    }
+  },
+  "State/Higher Education": {
+    "type": "health",
+    "plans": {
+      "PREMIER PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 884,
+          "Employee + Child(ren)": 1326,
+          "Employee + Spouse": 1989,
+          "Employee + Spouse + Child(ren)": 2297
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 974,
+          "Employee + Child(ren)": 1426,
+          "Employee + Spouse": 2169,
+          "Employee + Spouse + Child(ren)": 2477
+        }
+      },
+      "STANDARD PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 821,
+          "Employee + Child(ren)": 1231,
+          "Employee + Spouse": 1847,
+          "Employee + Spouse + Child(ren)": 2133
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 911,
+          "Employee + Child(ren)": 1331,
+          "Employee + Spouse": 2027,
+          "Employee + Spouse + Child(ren)": 2313
+        }
+      },
+      "CDHP/HSA": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 786,
+          "Employee + Child(ren)": 1180,
+          "Employee + Spouse": 1770,
+          "Employee + Spouse + Child(ren)": 2044
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 876,
+          "Employee + Child(ren)": 1280,
+          "Employee + Spouse": 1950,
+          "Employee + Spouse + Child(ren)": 2224
+        }
+      }
+    },
+    "employerContributions": {
+      "PREMIER PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 0.75,
+          "Employee + Child(ren)": 0.75,
+          "Employee + Spouse": 0.75,
+          "Employee + Spouse + Child(ren)": 0.75
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 0.62,
+          "Employee + Child(ren)": 0.66,
+          "Employee + Spouse": 0.64,
+          "Employee + Spouse + Child(ren)": 0.65
+        }
+      },
+      "STANDARD PPO": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 0.84,
+          "Employee + Child(ren)": 0.84,
+          "Employee + Spouse": 0.84,
+          "Employee + Spouse + Child(ren)": 0.84
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 0.71,
+          "Employee + Child(ren)": 0.75,
+          "Employee + Spouse": 0.73,
+          "Employee + Spouse + Child(ren)": 0.74
+        }
+      },
+      "CDHP/HSA": {
+        "BCBST Network S / Cigna LocalPlus": {
+          "Employee Only": 0.89,
+          "Employee + Child(ren)": 0.89,
+          "Employee + Spouse": 0.89,
+          "Employee + Spouse + Child(ren)": 0.89
+        },
+        "BCBST Network P / Cigna Open Access": {
+          "Employee Only": 0.76,
+          "Employee + Child(ren)": 0.79,
+          "Employee + Spouse": 0.77,
+          "Employee + Spouse + Child(ren)": 0.79
+        }
+      }
+    }
+  }
+};
+const planDetails = {
+  "Local Education": {
+    "PREMIER PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 750,
+          "out": 1500
+        },
+        "medicalOOP": {
+          "in": 3600,
+          "out": 7200
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 1125,
+          "out": 2250
+        },
+        "medicalOOP": {
+          "in": 5400,
+          "out": 10800
+        },
+        "rxOOP": {
+          "in": 3600,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 1500,
+          "out": 3000
+        },
+        "medicalOOP": {
+          "in": 7200,
+          "out": 14400
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 1875,
+          "out": 3750
+        },
+        "medicalOOP": {
+          "in": 9000,
+          "out": 18000
+        },
+        "rxOOP": {
+          "in": 6000,
+          "out": "N/A"
+        }
+      }
+    },
+    "STANDARD PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 1300,
+          "out": 2600
+        },
+        "medicalOOP": {
+          "in": 4400,
+          "out": 8800
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 1950,
+          "out": 3900
+        },
+        "medicalOOP": {
+          "in": 6600,
+          "out": 13200
+        },
+        "rxOOP": {
+          "in": 3600,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 2600,
+          "out": 5200
+        },
+        "medicalOOP": {
+          "in": 8800,
+          "out": 17600
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 3250,
+          "out": 6500
+        },
+        "medicalOOP": {
+          "in": 11000,
+          "out": 22000
+        },
+        "rxOOP": {
+          "in": 6000,
+          "out": "N/A"
+        }
+      }
+    },
+    "LIMITED PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 1800,
+          "out": 3600
+        },
+        "medicalOOP": {
+          "in": 6800,
+          "out": 13600
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 2500,
+          "out": 4800
+        },
+        "medicalOOP": {
+          "in": 13600,
+          "out": 27200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 2800,
+          "out": 5500
+        },
+        "medicalOOP": {
+          "in": 13600,
+          "out": 27200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 3600,
+          "out": 7200
+        },
+        "medicalOOP": {
+          "in": 13600,
+          "out": 27200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      }
+    },
+    "CDHP/HSA": {
+      "Employee Only": {
+        "deductible": {
+          "in": 2000,
+          "out": 4000
+        },
+        "medicalOOP": {
+          "in": 5000,
+          "out": 10000
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 4000,
+          "out": 8000
+        },
+        "medicalOOP": {
+          "in": 10000,
+          "out": 20000
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 4000,
+          "out": 8000
+        },
+        "medicalOOP": {
+          "in": 10000,
+          "out": 20000
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 4000,
+          "out": 8000
+        },
+        "medicalOOP": {
+          "in": 10000,
+          "out": 20000
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      }
+    }
+  },
+  "Local Government": {
+    "PREMIER PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 750,
+          "out": 1500
+        },
+        "medicalOOP": {
+          "in": 3600,
+          "out": 7200
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 1125,
+          "out": 2250
+        },
+        "medicalOOP": {
+          "in": 5400,
+          "out": 10800
+        },
+        "rxOOP": {
+          "in": 3600,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 1500,
+          "out": 3000
+        },
+        "medicalOOP": {
+          "in": 7200,
+          "out": 14400
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 1875,
+          "out": 3750
+        },
+        "medicalOOP": {
+          "in": 9000,
+          "out": 18000
+        },
+        "rxOOP": {
+          "in": 6000,
+          "out": "N/A"
+        }
+      }
+    },
+    "STANDARD PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 1300,
+          "out": 2600
+        },
+        "medicalOOP": {
+          "in": 4400,
+          "out": 8800
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 1950,
+          "out": 3900
+        },
+        "medicalOOP": {
+          "in": 6600,
+          "out": 13200
+        },
+        "rxOOP": {
+          "in": 3600,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 2600,
+          "out": 5200
+        },
+        "medicalOOP": {
+          "in": 8800,
+          "out": 17600
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 3250,
+          "out": 6500
+        },
+        "medicalOOP": {
+          "in": 11000,
+          "out": 22000
+        },
+        "rxOOP": {
+          "in": 6000,
+          "out": "N/A"
+        }
+      }
+    },
+    "LIMITED PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 1800,
+          "out": 3600
+        },
+        "medicalOOP": {
+          "in": 6800,
+          "out": 13600
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 2500,
+          "out": 4800
+        },
+        "medicalOOP": {
+          "in": 13600,
+          "out": 27200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 2800,
+          "out": 5500
+        },
+        "medicalOOP": {
+          "in": 13600,
+          "out": 27200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 3600,
+          "out": 7200
+        },
+        "medicalOOP": {
+          "in": 13600,
+          "out": 27200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      }
+    },
+    "CDHP/HSA": {
+      "Employee Only": {
+        "deductible": {
+          "in": 2000,
+          "out": 4000
+        },
+        "medicalOOP": {
+          "in": 5000,
+          "out": 10000
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 4000,
+          "out": 8000
+        },
+        "medicalOOP": {
+          "in": 10000,
+          "out": 20000
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 4000,
+          "out": 8000
+        },
+        "medicalOOP": {
+          "in": 10000,
+          "out": 20000
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 4000,
+          "out": 8000
+        },
+        "medicalOOP": {
+          "in": 10000,
+          "out": 20000
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      }
+    }
+  },
+  "State/Higher Education": {
+    "PREMIER PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 750,
+          "out": 1500
+        },
+        "medicalOOP": {
+          "in": 3600,
+          "out": 7200
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 1125,
+          "out": 2250
+        },
+        "medicalOOP": {
+          "in": 5400,
+          "out": 10800
+        },
+        "rxOOP": {
+          "in": 3600,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 1500,
+          "out": 3000
+        },
+        "medicalOOP": {
+          "in": 7200,
+          "out": 14400
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 1875,
+          "out": 3750
+        },
+        "medicalOOP": {
+          "in": 9000,
+          "out": 18000
+        },
+        "rxOOP": {
+          "in": 6000,
+          "out": "N/A"
+        }
+      }
+    },
+    "STANDARD PPO": {
+      "Employee Only": {
+        "deductible": {
+          "in": 1300,
+          "out": 2600
+        },
+        "medicalOOP": {
+          "in": 4400,
+          "out": 8800
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 1950,
+          "out": 3900
+        },
+        "medicalOOP": {
+          "in": 6600,
+          "out": 13200
+        },
+        "rxOOP": {
+          "in": 3600,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 2600,
+          "out": 5200
+        },
+        "medicalOOP": {
+          "in": 8800,
+          "out": 17600
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 3250,
+          "out": 6500
+        },
+        "medicalOOP": {
+          "in": 11000,
+          "out": 22000
+        },
+        "rxOOP": {
+          "in": 6000,
+          "out": "N/A"
+        }
+      }
+    },
+    "CDHP/HSA": {
+      "Employee Only": {
+        "deductible": {
+          "in": 1700,
+          "out": 3400
+        },
+        "medicalOOP": {
+          "in": 2800,
+          "out": 5600
+        },
+        "rxOOP": {
+          "in": 2400,
+          "out": "N/A"
+        }
+      },
+      "Employee + Child(ren)": {
+        "deductible": {
+          "in": 3400,
+          "out": 6800
+        },
+        "medicalOOP": {
+          "in": 5600,
+          "out": 11200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse": {
+        "deductible": {
+          "in": 3400,
+          "out": 6800
+        },
+        "medicalOOP": {
+          "in": 5600,
+          "out": 11200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      },
+      "Employee + Spouse + Child(ren)": {
+        "deductible": {
+          "in": 3400,
+          "out": 6800
+        },
+        "medicalOOP": {
+          "in": 5600,
+          "out": 11200
+        },
+        "rxOOP": {
+          "in": 4800,
+          "out": "N/A"
+        }
+      }
+    }
+  }
+};
+
+let selectedPlans = [];
+const entity = document.getElementById('entity');
+const coverage = document.getElementById('coverage');
+const contributionMode = document.getElementById('contributionMode');
+const customContribution = document.getElementById('customContribution');
+const customContributionWrap = document.getElementById('customContributionWrap');
+const contributionPanel = document.getElementById('contributionPanel');
+const contributionMessage = document.getElementById('contributionMessage');
+const comparisonFocus = document.getElementById('comparisonFocus');
+
+const planButtons = document.getElementById('planButtons');
+const cards = document.getElementById('cards');
+const quickResults = document.getElementById('quickResults');
+const tableWrap = document.getElementById('tableWrap');
+
+const snapshotGroup = document.getElementById('snapshotGroup');
+const snapshotCoverage = document.getElementById('snapshotCoverage');
+const snapshotMonthly = document.getElementById('snapshotMonthly');
+const snapshotAnnual = document.getElementById('snapshotAnnual');
+const snapshotPlans = document.getElementById('snapshotPlans');
+const snapshotMode = document.getElementById('snapshotMode');
+
+const goToResults = document.getElementById('goToResults');
+const startOverMain = document.getElementById('startOverMain');
+const startOverTop = document.getElementById('startOverTop');
+const saveShareTop = document.getElementById('saveShareTop');
+
+function dollars(value) {
+  if (value === null || value === undefined || isNaN(value)) return 'Not available';
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(value);
+}
+function cleanMoney(value) {
+  if (value === null || value === undefined || isNaN(value)) return 'Not available';
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value);
+}
+function percent(value) {
+  if (value === null || value === undefined || isNaN(value)) return 'Not available';
+  return Math.round(value * 100) + '%';
+}
+function selectedEntity() {
+  return entity.value || 'State/Higher Education';
+}
+function getAvailablePlans() {
+  const group = healthData[selectedEntity()];
+  return Object.keys(group.plans).flatMap(plan =>
+    Object.keys(group.plans[plan]).map(network => ({ plan, network, label: `${plan} — ${network}` }))
+  );
+}
+function getRawPremium(item) {
+  return healthData[selectedEntity()].plans[item.plan][item.network][coverage.value];
+}
+function getPlanDetails(item) {
+  return planDetails?.[selectedEntity()]?.[item.plan]?.[coverage.value] || null;
+}
+function getEmployerRate(item) {
+  const group = selectedEntity();
+  if (contributionMode.value === 'percent') return Math.min(Number(customContribution.value || 0), 100) / 100;
+  if (contributionMode.value === 'dollar') return null;
+  if (group === 'State/Higher Education') {
+    return healthData[group].employerContributions[item.plan][item.network][coverage.value];
+  }
+  return 0;
+}
+function calculate(item) {
+  const raw = getRawPremium(item);
+  const rate = getEmployerRate(item);
+  let employerPaid = 0;
+  if (contributionMode.value === 'dollar') {
+    employerPaid = Math.min(Number(customContribution.value || 0), raw);
+  } else {
+    employerPaid = raw * rate;
+  }
+  const employeePaid = Math.max(raw - employerPaid, 0);
+  const details = getPlanDetails(item);
+  const inNetworkMoop = details?.moop?.inNetwork ?? null;
+  const inNetworkDeductible = details?.deductible?.inNetwork ?? null;
+  const employeeAnnualPremium = employeePaid * 12;
+  const employerAnnualPremium = employerPaid * 12;
+  const totalAnnualPremium = raw * 12;
+  const employeeAnnualHighUse = inNetworkMoop !== null ? employeeAnnualPremium + inNetworkMoop : null;
+  return {
+    raw,
+    employerPaid,
+    employeePaid,
+    employeeAnnualPremium,
+    employerAnnualPremium,
+    totalAnnualPremium,
+    contribution: contributionMode.value === 'dollar' ? dollars(employerPaid) : percent(rate),
+    details,
+    inNetworkMoop,
+    inNetworkDeductible,
+    employeeAnnualHighUse
+  };
+}
+function describeNetwork(item) {
+  if (item.network.includes('Network P')) return 'Network P / Open Access Plus — broader network, higher premium';
+  if (item.network.includes('Network S')) return 'Network S / LocalPlus — lower-premium network option';
+  return item.network;
+}
+function updateContributionUI() {
+  const group = selectedEntity();
+  const localGroup = group === 'Local Education' || group === 'Local Government';
+  contributionPanel.classList.toggle('hidden', !localGroup);
+  if (localGroup && contributionMode.value === 'default') contributionMode.value = 'percent';
+  if (!localGroup) contributionMode.value = 'default';
+
+  if (localGroup) {
+    contributionMessage.innerHTML = '<strong>Agency contributions vary.</strong> Enter what your agency pays to estimate the employee monthly cost. If you are not sure, check with your agency benefits coordinator.';
+  } else {
+    contributionMessage.textContent = 'State/Higher Education contribution percentages are applied automatically.';
+  }
+
+  const customNeeded = contributionMode.value === 'percent' || contributionMode.value === 'dollar';
+  customContributionWrap.classList.toggle('hidden', !customNeeded);
+  customContribution.previousElementSibling.textContent = contributionMode.value === 'dollar' ? 'Monthly dollar amount' : 'Contribution percentage';
+}
+function ensureSelections() {
+  const available = getAvailablePlans();
+  selectedPlans = selectedPlans.filter(sel => available.some(item => item.label === sel.label));
+  if (selectedPlans.length === 0) selectedPlans = available.slice(0, Math.min(3, available.length));
+  selectedPlans = selectedPlans.slice(0, 3);
+}
+function getComparisons() {
+  return selectedPlans.map(item => ({ item, ...calculate(item) }));
+}
+function renderQuickResults() {
+  const comparisons = getComparisons();
+  const lowestMonthly = comparisons.reduce((a, b) => b.employeePaid < a.employeePaid ? b : a, comparisons[0]);
+  const lowestHighUse = comparisons.reduce((a, b) => b.employeeAnnualHighUse < a.employeeAnnualHighUse ? b : a, comparisons[0]);
+  const lowestDeductible = comparisons.reduce((a, b) => b.inNetworkDeductible < a.inNetworkDeductible ? b : a, comparisons[0]);
+  const lowestEmployer = comparisons.reduce((a, b) => b.employerAnnualPremium < a.employerAnnualPremium ? b : a, comparisons[0]);
+
+  quickResults.innerHTML = `
+    <article class="summary-box">
+      <span class="eyebrow">Lowest monthly employee cost</span>
+      <strong>${lowestMonthly.item.plan}</strong>
+      <span>${dollars(lowestMonthly.employeePaid)} per month</span>
+      <p>${describeNetwork(lowestMonthly.item)}</p>
+    </article>
+    <article class="summary-box">
+      <span class="eyebrow">Lowest estimated annual high-use cost</span>
+      <strong>${lowestHighUse.item.plan}</strong>
+      <span>${dollars(lowestHighUse.employeeAnnualHighUse)} per year</span>
+      <p>Employee annual premium share + in-network medical out-of-pocket maximum.</p>
+    </article>
+    <article class="summary-box">
+      <span class="eyebrow">Lowest in-network deductible</span>
+      <strong>${lowestDeductible.item.plan}</strong>
+      <span>${cleanMoney(lowestDeductible.inNetworkDeductible)}</span>
+      <p>${describeNetwork(lowestDeductible.item)}</p>
+    </article>
+    <article class="summary-box">
+      <span class="eyebrow">Lowest employer/agency annual share</span>
+      <strong>${lowestEmployer.item.plan}</strong>
+      <span>${dollars(lowestEmployer.employerAnnualPremium)} per year</span>
+      <p>Based on the contribution setting currently applied.</p>
+    </article>
+  `;
+
+  snapshotMonthly.textContent = dollars(lowestMonthly.employeePaid);
+  snapshotAnnual.textContent = dollars(lowestHighUse.employeeAnnualHighUse);
+}
+function renderPlanSelectors() {
+  const available = getAvailablePlans();
+  planButtons.innerHTML = '';
+
+  for (let slot = 0; slot < 3; slot++) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'plan-slot';
+
+    const label = document.createElement('label');
+    label.setAttribute('for', `planSlot${slot}`);
+    label.textContent = `Comparison Plan ${slot + 1}`;
+
+    const select = document.createElement('select');
+    select.id = `planSlot${slot}`;
+
+    const empty = document.createElement('option');
+    empty.value = '';
+    empty.textContent = slot === 0 ? 'Choose a health plan' : 'No plan selected';
+    select.appendChild(empty);
+
+    available.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.label;
+      option.textContent = item.label;
+      if (selectedPlans[slot] && selectedPlans[slot].label === item.label) option.selected = true;
+      select.appendChild(option);
+    });
+
+    select.addEventListener('change', () => {
+      const chosen = available.find(item => item.label === select.value);
+      if (chosen) selectedPlans[slot] = chosen;
+      else selectedPlans.splice(slot, 1);
+
+      const seen = new Set();
+      selectedPlans = selectedPlans.filter(item => {
+        if (!item || seen.has(item.label)) return false;
+        seen.add(item.label);
+        return true;
+      });
+      render();
+    });
+
+    const help = document.createElement('p');
+    help.textContent = selectedPlans[slot] ? describeNetwork(selectedPlans[slot]) : 'Pick one option for this comparison column.';
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    wrapper.appendChild(help);
+    planButtons.appendChild(wrapper);
+  }
+}
+function renderCards() {
+  const comparisons = getComparisons();
+  const minMonthly = Math.min(...comparisons.map(c => c.employeePaid));
+  const minHighUse = Math.min(...comparisons.map(c => c.employeeAnnualHighUse));
+  const minDeductible = Math.min(...comparisons.map(c => c.inNetworkDeductible));
+
+  cards.innerHTML = '';
+  comparisons.forEach(c => {
+    const details = c.details;
+    const card = document.createElement('article');
+    const focusClass = comparisonFocus.value === 'monthly' ? (c.employeePaid === minMonthly ? ' is-lowest' : '') :
+                       comparisonFocus.value === 'annual' ? (c.employeeAnnualHighUse === minHighUse ? ' is-lowest' : '') :
+                       (c.employeePaid === minMonthly ? ' is-lowest' : '');
+    card.className = 'plan-card' + focusClass;
+
+    const badges = [];
+    if (c.employeePaid === minMonthly) badges.push('<span class="badge">Lowest monthly cost</span>');
+    if (c.employeeAnnualHighUse === minHighUse) badges.push('<span class="badge">Lowest annual high-use cost</span>');
+    if (c.inNetworkDeductible === minDeductible) badges.push('<span class="badge">Lowest deductible</span>');
+
+    card.innerHTML = `
+      <h4>${c.item.plan}</h4>
+      <p class="sub">${describeNetwork(c.item)}</p>
+      <div class="badges">${badges.join('')}</div>
+
+      <div class="metric">
+        <div class="metric-label">Estimated monthly employee cost</div>
+        <div class="metric-value">${dollars(c.employeePaid)}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Employee annual premium share</div>
+        <div class="metric-value">${dollars(c.employeeAnnualPremium)}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Estimated annual high-use cost</div>
+        <div class="metric-value">${dollars(c.employeeAnnualHighUse)}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Employer/agency annual premium share</div>
+        <div class="metric-value">${dollars(c.employerAnnualPremium)}</div>
+      </div>
+
+      <details>
+        <summary>View medical plan details and assumptions</summary>
+        <div class="detail-grid">
+          <div class="detail-row"><span>Total monthly premium</span><strong>${dollars(c.raw)}</strong></div>
+          <div class="detail-row"><span>Employer/agency contribution</span><strong>${c.contribution}</strong></div>
+          <div class="detail-row"><span>Total annual premium</span><strong>${dollars(c.totalAnnualPremium)}</strong></div>
+          <div class="detail-row"><span>In-network deductible</span><strong>${cleanMoney(details.deductible.inNetwork)}</strong></div>
+          <div class="detail-row"><span>Out-of-network deductible</span><strong>${cleanMoney(details.deductible.outOfNetwork)}</strong></div>
+          <div class="detail-row"><span>In-network medical out-of-pocket maximum</span><strong>${cleanMoney(details.moop.inNetwork)}</strong></div>
+          <div class="detail-row"><span>Out-of-network medical out-of-pocket maximum</span><strong>${cleanMoney(details.moop.outOfNetwork)}</strong></div>
+          <div class="detail-row"><span>In-network specialty pharmacy out-of-pocket maximum</span><strong>${cleanMoney(details.rxMoop.inNetwork)}</strong></div>
+          <div class="detail-row"><span>Out-of-network specialty pharmacy out-of-pocket maximum</span><strong>${cleanMoney(details.rxMoop.outOfNetwork)}</strong></div>
+        </div>
+      </details>
+    `;
+    cards.appendChild(card);
+  });
+}
+function renderTable() {
+  const comparisons = getComparisons();
+  const minMonthly = Math.min(...comparisons.map(c => c.employeePaid));
+  const minHighUse = Math.min(...comparisons.map(c => c.employeeAnnualHighUse));
+  const minDeductible = Math.min(...comparisons.map(c => c.inNetworkDeductible));
+  const minEmployerAnnual = Math.min(...comparisons.map(c => c.employerAnnualPremium));
+
+  const rows = [
+    ['Plan', ...comparisons.map(c => c.item.plan)],
+    ['Network', ...comparisons.map(c => c.item.network)],
+    ['Coverage level', ...comparisons.map(c => coverage.value)],
+    ['Estimated monthly employee cost', ...comparisons.map(c => dollars(c.employeePaid))],
+    ['Employee annual premium share', ...comparisons.map(c => dollars(c.employeeAnnualPremium))],
+    ['Estimated annual high-use cost', ...comparisons.map(c => dollars(c.employeeAnnualHighUse))],
+    ['Employer/agency monthly premium share', ...comparisons.map(c => dollars(c.employerPaid))],
+    ['Employer/agency annual premium share', ...comparisons.map(c => dollars(c.employerAnnualPremium))],
+    ['Total monthly premium', ...comparisons.map(c => dollars(c.raw))],
+    ['Total annual premium', ...comparisons.map(c => dollars(c.totalAnnualPremium))],
+    ['Employer/agency contribution', ...comparisons.map(c => c.contribution)],
+    ['In-network deductible', ...comparisons.map(c => cleanMoney(c.details.deductible.inNetwork))],
+    ['Out-of-network deductible', ...comparisons.map(c => cleanMoney(c.details.deductible.outOfNetwork))],
+    ['In-network medical out-of-pocket maximum', ...comparisons.map(c => cleanMoney(c.details.moop.inNetwork))],
+    ['Out-of-network medical out-of-pocket maximum', ...comparisons.map(c => cleanMoney(c.details.moop.outOfNetwork))],
+    ['In-network specialty pharmacy out-of-pocket maximum', ...comparisons.map(c => cleanMoney(c.details.rxMoop.inNetwork))],
+    ['Out-of-network specialty pharmacy out-of-pocket maximum', ...comparisons.map(c => cleanMoney(c.details.rxMoop.outOfNetwork))]
+  ];
+
+  tableWrap.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Comparison point</th>
+          ${comparisons.map(c => `<th>${c.item.label}</th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(row => `
+          <tr>
+            <td><strong>${row[0]}</strong></td>
+            ${row.slice(1).map((cell, i) => {
+              const c = comparisons[i];
+              const isLowest =
+                (row[0] === 'Estimated monthly employee cost' && c.employeePaid === minMonthly) ||
+                (row[0] === 'Estimated annual high-use cost' && c.employeeAnnualHighUse === minHighUse) ||
+                (row[0] === 'Employer/agency annual premium share' && c.employerAnnualPremium === minEmployerAnnual) ||
+                (row[0] === 'In-network deductible' && c.inNetworkDeductible === minDeductible);
+              return `<td class="${isLowest ? 'lowest-cell' : ''}">${cell}</td>`;
+            }).join('')}
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+function updateSnapshot() {
+  snapshotGroup.textContent = selectedEntity();
+  snapshotCoverage.textContent = coverage.value;
+  snapshotPlans.textContent = String(selectedPlans.length);
+  snapshotMode.textContent =
+    contributionMode.value === 'default' ? 'Automatic' :
+    contributionMode.value === 'percent' ? 'Percentage' : 'Dollar amount';
+}
+function resetAll() {
+  entity.value = '';
+  coverage.value = 'Employee Only';
+  comparisonFocus.value = 'balanced';
+  contributionMode.value = 'default';
+  customContribution.value = 50;
+  selectedPlans = [];
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function render() {
+  updateContributionUI();
+  ensureSelections();
+  renderQuickResults();
+  renderPlanSelectors();
+  renderCards();
+  renderTable();
+  updateSnapshot();
+}
+[startOverMain, startOverTop].forEach(btn => btn.addEventListener('click', resetAll));
+goToResults.addEventListener('click', () => {
+  document.getElementById('quickResultsSection').scrollIntoView({ behavior: 'smooth' });
+});
+saveShareTop.addEventListener('click', async () => {
+  const shareUrl = window.location.href;
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: document.title,
+        text: '2026 Health Insurance Comparison Tool',
+        url: shareUrl
+      });
+    } catch (e) {}
+  } else {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      alert('Link copied to clipboard.');
+    } catch (e) {
+      alert('Sharing is not available in this browser.');
+    }
+  }
+});
+[entity, coverage, contributionMode, customContribution, comparisonFocus].forEach(el => {
+  el.addEventListener('change', () => {
+    if (el === entity) selectedPlans = [];
+    render();
+  });
+  el.addEventListener('input', render);
+});
+render();
+</script>
+</body>
+</html>
