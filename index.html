@@ -1,581 +1,968 @@
-<!doctype html>
+from pathlib import Path
+
+html = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2026 Partners for Health Premium Comparison Tool</title>
-<style>
-.premium-calculator {
-  padding: 20px;
-  border: 1px solid #d9e2ec;
-  background: #f7f9fb;
-  font-family: Arial, sans-serif;
-  color: #1f2933;
-  max-width: 100%;
-}
-
-.premium-calculator label {
-  display: block;
-  margin-top: 12px;
-  font-weight: bold;
-}
-
-.premium-calculator select,
-.premium-calculator input {
-  width: 100%;
-  padding: 9px;
-  margin-top: 4px;
-  box-sizing: border-box;
-}
-
-.helper-text {
-  font-size: 0.95rem;
-  margin-bottom: 14px;
-}
-
-.premium-message {
-  margin: 14px 0;
-  font-weight: bold;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-}
-
-.button-row {
-  margin-top: 16px;
-}
-
-.premium-calculator button {
-  margin: 6px 8px 6px 0;
-  padding: 10px 14px;
-  cursor: pointer;
-  border: 1px solid #005ea8;
-  background: #005ea8;
-  color: #ffffff;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.premium-calculator button.secondary {
-  background: #ffffff;
-  color: #005ea8;
-}
-
-.summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 12px;
-  margin: 18px 0;
-}
-
-.summary-card {
-  background: #ffffff;
-  border: 1px solid #d9e2ec;
-  border-radius: 6px;
-  padding: 14px;
-}
-
-.summary-card strong {
-  display: block;
-  font-size: 1.3rem;
-  margin-top: 4px;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-  margin-top: 12px;
-}
-
-#resultsTable,
-#calculationBreakdownTable {
-  width: 100%;
-  border-collapse: collapse;
-  background: #ffffff;
-}
-
-#resultsTable th,
-#resultsTable td,
-#calculationBreakdownTable th,
-#calculationBreakdownTable td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-  vertical-align: top;
-}
-
-#resultsTable th,
-#calculationBreakdownTable th {
-  background: #e9f2fb;
-}
-
-.remove-button {
-  background: #ffffff !important;
-  color: #b00020 !important;
-  border-color: #b00020 !important;
-}
-
-@media print {
-  .builder-section,
-  .button-row,
-  .remove-column,
-  .remove-button {
-    display: none !important;
-  }
-}
-@media (max-width: 700px) {
-  .premium-calculator {
-    padding: 14px;
-  }
-
-  .form-grid,
-  .summary-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .premium-calculator button {
-    width: 100%;
-    margin-right: 0;
-  }
-
-  .table-wrapper {
-    overflow-x: visible;
-  }
-
-  #resultsTable,
-  #resultsTable thead,
-  #resultsTable tbody,
-  #resultsTable th,
-  #resultsTable td,
-  #resultsTable tr {
-    display: block;
-    width: 100%;
-  }
-
-  #resultsTable thead {
-    display: none;
-  }
-
-  #resultsTable tr {
-    margin-bottom: 14px;
-    border: 1px solid #ccc;
-    background: #ffffff;
-    padding: 10px;
-  }
-
-  #resultsTable td {
-    border: none;
-    border-bottom: 1px solid #e5e5e5;
-    padding: 8px 0;
-  }
-
-  #resultsTable td::before {
-    content: attr(data-label);
-    display: block;
-    font-weight: bold;
-    margin-bottom: 3px;
-  }
-
-  #calculationBreakdownTable {
-    font-size: 0.9rem;
-  }
-}
-</style>
-
-<div class="premium-calculator">
-  <h3>Monthly Premium Estimate Calculator</h3>
-
-  <p class="helper-text">
-    Build an estimate by adding one employee group at a time. A group is a set of employees with the same plan, coverage level and agency contribution.
-  </p>
-
-  <div id="message" class="premium-message" role="status" aria-live="polite"></div>
-
-  <div class="builder-section">
-    <h4>Step 1: Select Agency Information</h4>
-
-    <div class="form-grid">
-      <div>
-        <label for="agencyType">Agency type</label>
-        <select id="agencyType">
-          <option value="">Select one</option>
-          <option value="localEducation">Local Education</option>
-          <option value="localGovernment">Local Government</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="network">Network/carrier option</label>
-        <select id="network">
-          <option value="">Select one</option>
-          <option value="networkS">BCBS Network S / Cigna LocalPlus</option>
-          <option value="networkP">BCBS Network P / Cigna Open Access Plus</option>
-        </select>
-      </div>
-    </div>
-
-    <h4>Step 2: Add Employee Group</h4>
-
-    <div class="form-grid">
-      <div>
-        <label for="groupPlan">Plan option</label>
-        <select id="groupPlan">
-          <option value="">Select one</option>
-          <option value="Premier PPO">Premier PPO</option>
-          <option value="Standard PPO">Standard PPO</option>
-          <option value="Limited PPO">Limited PPO</option>
-          <option value="Local CDHP/HSA">Local CDHP/HSA</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="groupCoverage">Coverage level</label>
-        <select id="groupCoverage">
-          <option value="">Select one</option>
-          <option value="Employee Only">Employee Only</option>
-          <option value="Employee + Child(ren)">Employee + Child(ren)</option>
-          <option value="Employee + Spouse">Employee + Spouse</option>
-          <option value="Employee + Spouse + Child(ren)">Employee + Spouse + Child(ren)</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="groupEmployees">Number of employees</label>
-        <input type="number" id="groupEmployees" min="1" step="1" placeholder="Example: 25">
-      </div>
-
-      <div>
-        <label for="contributionType">Agency contribution type</label>
-        <select id="contributionType" onchange="toggleContributionInput()">
-          <option value="percent">Percentage</option>
-          <option value="dollar">Dollar amount</option>
-        </select>
-      </div>
-
-      <div id="percentContributionField">
-        <label for="groupPercent">Agency contribution %</label>
-        <input type="number" id="groupPercent" min="0" max="100" step="0.01" placeholder="Example: 80">
-      </div>
-
-      <div id="dollarContributionField" style="display:none;">
-        <label for="groupDollar">Agency contribution amount per employee</label>
-        <input type="number" id="groupDollar" min="0" step="0.01" placeholder="Example: 650">
-      </div>
-    </div>
-
-    <div class="button-row">
-      <button type="button" onclick="addGroup()">Add Group</button>
-      <button type="button" class="secondary" onclick="clearInputs()">Clear Entry Fields</button>
-    </div>
-  </div>
-
-  <h4>Estimate Summary</h4>
-
-  <div class="summary-cards">
-    <div class="summary-card">
-      Total Employees
-      <strong id="totalEmployees">0</strong>
-    </div>
-
-    <div class="summary-card">
-      Agency Monthly Cost
-      <strong id="totalAgencyMonthly">$0.00</strong>
-    </div>
-
-    <div class="summary-card">
-      Agency Annual Cost
-      <strong id="totalAgencyAnnual">$0.00</strong>
-    </div>
-  </div>
-
-  <div class="button-row">
-    <button type="button" onclick="downloadResults()">Download CSV</button>
-    <button type="button" onclick="printResults()">Print / Save as PDF</button>
-    <button type="button" class="secondary" onclick="clearAllGroups()">Clear All Groups</button>
-  </div>
-
-  <h4>Employee Groups Added</h4>
-
-  <div class="table-wrapper">
-    <table id="resultsTable">
-      <thead>
-        <tr>
-          <th>Plan</th>
-          <th>Coverage Level</th>
-          <th>Employees</th>
-          <th>Partners Premium Rate</th>
-          <th>Agency Contribution</th>
-          <th>Agency Monthly Cost (Total)</th>
-          <th>Employee Monthly Cost (Per Employee)</th>
-          <th>Agency Annual Cost (Total)</th>
-          <th>Employee Annual Cost (Per Employee)</th>
-          <th class="remove-column">Remove</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <h4>What the Results Mean</h4>
-
-  <div class="table-wrapper">
-    <table id="calculationBreakdownTable">
-      <thead>
-        <tr>
-          <th>Column</th>
-          <th>What it means</th>
-          <th>Calculation used</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Partners Premium Rate</td>
-          <td>The full monthly premium rate for one employee.</td>
-          <td>Rate from the premium table</td>
-        </tr>
-        <tr>
-          <td>Agency Contribution</td>
-          <td>The agency share entered as either a percentage or dollar amount per employee.</td>
-          <td>User-entered value</td>
-        </tr>
-        <tr>
-          <td>Agency Monthly Cost (Total)</td>
-          <td>The total estimated amount the agency pays each month for that employee group.</td>
-          <td>Agency contribution amount per employee × Employees</td>
-        </tr>
-        <tr>
-          <td>Employee Monthly Cost (Per Employee)</td>
-          <td>The estimated amount each employee pays per month.</td>
-          <td>Partners Premium Rate − Agency contribution amount per employee</td>
-        </tr>
-        <tr>
-          <td>Agency Annual Cost (Total)</td>
-          <td>The total estimated amount the agency pays per year for that employee group.</td>
-          <td>Agency Monthly Cost × 12</td>
-        </tr>
-        <tr>
-          <td>Employee Annual Cost (Per Employee)</td>
-          <td>The estimated amount each employee pays per year.</td>
-          <td>Employee Monthly Cost × 12</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<script>
-const premiums = {
-  localGovernment: {
-    networkS: {
-      "Premier PPO": {"Employee Only": 904,"Employee + Child(ren)": 1402,"Employee + Spouse": 2080,"Employee + Spouse + Child(ren)": 2444},
-      "Standard PPO": {"Employee Only": 832,"Employee + Child(ren)": 1290,"Employee + Spouse": 1914,"Employee + Spouse + Child(ren)": 2249},
-      "Limited PPO": {"Employee Only": 675,"Employee + Child(ren)": 1048,"Employee + Spouse": 1554,"Employee + Spouse + Child(ren)": 1826},
-      "Local CDHP/HSA": {"Employee Only": 624,"Employee + Child(ren)": 967,"Employee + Spouse": 1434,"Employee + Spouse + Child(ren)": 1685}
-    },
-    networkP: {
-      "Premier PPO": {"Employee Only": 994,"Employee + Child(ren)": 1502,"Employee + Spouse": 2260,"Employee + Spouse + Child(ren)": 2624},
-      "Standard PPO": {"Employee Only": 922,"Employee + Child(ren)": 1390,"Employee + Spouse": 2094,"Employee + Spouse + Child(ren)": 2429},
-      "Limited PPO": {"Employee Only": 765,"Employee + Child(ren)": 1148,"Employee + Spouse": 1734,"Employee + Spouse + Child(ren)": 2006},
-      "Local CDHP/HSA": {"Employee Only": 714,"Employee + Child(ren)": 1067,"Employee + Spouse": 1614,"Employee + Spouse + Child(ren)": 1865}
-    }
-  },
-  localEducation: {
-    networkS: {
-      "Premier PPO": {"Employee Only": 793,"Employee + Child(ren)": 1307,"Employee + Spouse": 1783,"Employee + Spouse + Child(ren)": 2060},
-      "Standard PPO": {"Employee Only": 736,"Employee + Child(ren)": 1214,"Employee + Spouse": 1656,"Employee + Spouse + Child(ren)": 1914},
-      "Limited PPO": {"Employee Only": 695,"Employee + Child(ren)": 1146,"Employee + Spouse": 1565,"Employee + Spouse + Child(ren)": 1807},
-      "Local CDHP/HSA": {"Employee Only": 607,"Employee + Child(ren)": 1001,"Employee + Spouse": 1365,"Employee + Spouse + Child(ren)": 1578}
-    },
-    networkP: {
-      "Premier PPO": {"Employee Only": 883,"Employee + Child(ren)": 1407,"Employee + Spouse": 1963,"Employee + Spouse + Child(ren)": 2240},
-      "Standard PPO": {"Employee Only": 826,"Employee + Child(ren)": 1314,"Employee + Spouse": 1836,"Employee + Spouse + Child(ren)": 2094},
-      "Limited PPO": {"Employee Only": 785,"Employee + Child(ren)": 1246,"Employee + Spouse": 1745,"Employee + Spouse + Child(ren)": 1987},
-      "Local CDHP/HSA": {"Employee Only": 697,"Employee + Child(ren)": 1101,"Employee + Spouse": 1545,"Employee + Spouse + Child(ren)": 1758}
-    }
-  }
-};
-
-function formatCurrency(num) {
-  return num.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
-
-function setMessage(text) {
-  document.getElementById("message").textContent = text;
-}
-
-function toggleContributionInput() {
-  const contributionType = document.getElementById("contributionType").value;
-
-  document.getElementById("percentContributionField").style.display =
-    contributionType === "percent" ? "block" : "none";
-
-  document.getElementById("dollarContributionField").style.display =
-    contributionType === "dollar" ? "block" : "none";
-}
-
-function addGroup() {
-  const agencyType = document.getElementById("agencyType").value;
-  const network = document.getElementById("network").value;
-  const plan = document.getElementById("groupPlan").value;
-  const coverage = document.getElementById("groupCoverage").value;
-  const employees = parseInt(document.getElementById("groupEmployees").value, 10);
-  const contributionType = document.getElementById("contributionType").value;
-  const agencyPercentInput = parseFloat(document.getElementById("groupPercent").value);
-  const agencyDollarInput = parseFloat(document.getElementById("groupDollar").value);
-
-  if (!agencyType || !network || !plan || !coverage || isNaN(employees)) {
-    setMessage("Complete all fields before adding a group.");
-    return;
-  }
-
-  if (employees < 1) {
-    setMessage("Number of employees must be at least 1.");
-    return;
-  }
-
-  const premium = premiums[agencyType][network][plan][coverage];
-
-  let agencyMonthlyCostPerEmployee;
-  let contributionDisplay;
-
-  if (contributionType === "percent") {
-    if (isNaN(agencyPercentInput) || agencyPercentInput < 0 || agencyPercentInput > 100) {
-      setMessage("Agency contribution percentage must be between 0 and 100.");
-      return;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Partners for Health Retiree Eligibility Guide</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #5f6b7a;
+      --border: #d8e0ea;
+      --primary: #0b5cab;
+      --primary-dark: #08477f;
+      --success: #1f7a4d;
+      --warning: #9a6700;
+      --danger: #b42318;
+      --soft-blue: #eaf3fc;
+      --soft-green: #eaf7f0;
+      --soft-yellow: #fff6db;
+      --soft-red: #fdecec;
+      --shadow: 0 10px 25px rgba(24, 39, 75, 0.08);
     }
 
-    agencyMonthlyCostPerEmployee = premium * (agencyPercentInput / 100);
-    contributionDisplay = agencyPercentInput + "%";
-  }
+    * { box-sizing: border-box; }
 
-  if (contributionType === "dollar") {
-    if (isNaN(agencyDollarInput) || agencyDollarInput < 0 || agencyDollarInput > premium) {
-      setMessage("Agency contribution amount must be between $0 and the Partners Premium Rate.");
-      return;
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
     }
 
-    agencyMonthlyCostPerEmployee = agencyDollarInput;
-    contributionDisplay = formatCurrency(agencyDollarInput);
-  }
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
+    }
 
-  const agencyMonthlyCost = agencyMonthlyCostPerEmployee * employees;
-  const employeeMonthlyCostPerEmployee = premium - agencyMonthlyCostPerEmployee;
-  const agencyAnnualCost = agencyMonthlyCost * 12;
-  const employeeAnnualCostPerEmployee = employeeMonthlyCostPerEmployee * 12;
+    header {
+      background: linear-gradient(135deg, var(--primary), #173f73);
+      color: white;
+      padding: 42px 0 34px;
+    }
 
-  const tbody = document.querySelector("#resultsTable tbody");
-  const row = tbody.insertRow();
+    header h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      line-height: 1.1;
+    }
 
-  row.innerHTML =
-  "<td data-label='Plan'>" + plan + "</td>" +
-  "<td data-label='Coverage Level'>" + coverage + "</td>" +
-  "<td data-label='Employees'>" + employees + "</td>" +
-  "<td data-label='Partners Premium Rate'>" + formatCurrency(premium) + "</td>" +
-  "<td data-label='Agency Contribution'>" + contributionDisplay + "</td>" +
-  "<td data-label='Agency Monthly Cost (Total)'>" + formatCurrency(agencyMonthlyCost) + "</td>" +
-  "<td data-label='Employee Monthly Cost (Per Employee)'>" + formatCurrency(employeeMonthlyCostPerEmployee) + "</td>" +
-  "<td data-label='Agency Annual Cost (Total)'>" + formatCurrency(agencyAnnualCost) + "</td>" +
-  "<td data-label='Employee Annual Cost (Per Employee)'>" + formatCurrency(employeeAnnualCostPerEmployee) + "</td>" +
-  "<td data-label='Remove' class='remove-column'><button type='button' class='remove-button' onclick='removeGroup(this)'>Remove</button></td>";
+    header p {
+      margin: 0;
+      max-width: 780px;
+      font-size: 1.05rem;
+      opacity: 0.95;
+    }
 
-  updateSummary();
-  clearInputs();
+    main {
+      padding: 28px 0 48px;
+    }
 
-  setMessage("Employee group added.");
-}
+    .notice,
+    .card,
+    .result-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
 
-function removeGroup(button) {
-  button.closest("tr").remove();
-  updateSummary();
-  setMessage("Employee group removed.");
-}
+    .notice {
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      border-left: 6px solid var(--warning);
+      background: var(--soft-yellow);
+    }
 
-function updateSummary() {
-  const rows = document.querySelectorAll("#resultsTable tbody tr");
-  let totalEmployees = 0;
-  let totalAgencyMonthly = 0;
-  let totalAgencyAnnual = 0;
+    .progress-wrap {
+      margin-bottom: 20px;
+    }
 
-  rows.forEach(function(row) {
-    totalEmployees += parseInt(row.cells[2].innerText, 10) || 0;
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
 
-    const monthly = row.cells[5].innerText.replace(/[$,]/g, "");
-    const annual = row.cells[7].innerText.replace(/[$,]/g, "");
+    .progress {
+      height: 12px;
+      background: #dbe4ee;
+      border-radius: 999px;
+      overflow: hidden;
+    }
 
-    totalAgencyMonthly += parseFloat(monthly) || 0;
-    totalAgencyAnnual += parseFloat(annual) || 0;
-  });
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--primary), #2684d8);
+      transition: width 0.25s ease;
+    }
 
-  document.getElementById("totalEmployees").textContent = totalEmployees;
-  document.getElementById("totalAgencyMonthly").textContent = formatCurrency(totalAgencyMonthly);
-  document.getElementById("totalAgencyAnnual").textContent = formatCurrency(totalAgencyAnnual);
-}
+    .card {
+      padding: 24px;
+      margin-bottom: 20px;
+    }
 
-function clearInputs() {
-  document.getElementById("groupPlan").value = "";
-  document.getElementById("groupCoverage").value = "";
-  document.getElementById("groupEmployees").value = "";
-  document.getElementById("groupPercent").value = "";
-  document.getElementById("groupDollar").value = "";
-  document.getElementById("contributionType").value = "percent";
-  toggleContributionInput();
-}
+    .card h2,
+    .card h3 {
+      margin-top: 0;
+    }
 
-function clearAllGroups() {
-  document.querySelector("#resultsTable tbody").innerHTML = "";
-  updateSummary();
-  setMessage("All groups cleared.");
-}
+    .step-label {
+      display: inline-block;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
 
-function downloadResults() {
-  const hasResults = document.querySelector("#resultsTable tbody").rows.length > 0;
+    .options {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
 
-  if (!hasResults) {
-    setMessage("Add at least one group before downloading results.");
-    return;
-  }
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
 
-  const rows = document.querySelectorAll("#resultsTable tr");
-  let csv = "";
+    .option:hover {
+      border-color: var(--primary);
+      background: var(--soft-blue);
+      transform: translateY(-1px);
+    }
 
-  rows.forEach(function(row) {
-    const cols = row.querySelectorAll("th, td");
-    const rowData = [];
+    .option input {
+      margin-top: 3px;
+      transform: scale(1.15);
+    }
 
-    cols.forEach(function(col, index) {
-      if (index !== cols.length - 1) {
-        rowData.push('"' + col.innerText.replace(/"/g, '""') + '"');
+    .option strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .option small {
+      color: var(--muted);
+      display: block;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.98rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: #e8edf3;
+      color: var(--text);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .result-card {
+      padding: 24px;
+      margin-top: 20px;
+    }
+
+    .result-card h2 {
+      margin-top: 0;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .status.success {
+      background: var(--soft-green);
+      color: var(--success);
+    }
+
+    .status.warning {
+      background: var(--soft-yellow);
+      color: var(--warning);
+    }
+
+    .status.danger {
+      background: var(--soft-red);
+      color: var(--danger);
+    }
+
+    .summary-list {
+      padding-left: 20px;
+    }
+
+    .summary-list li {
+      margin-bottom: 8px;
+    }
+
+    .next-steps {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 12px;
+      background: var(--soft-blue);
+      border: 1px solid #c9dff5;
+    }
+
+    .inline-note {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #f7f9fc;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    label.field-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 0 0 38px;
+    }
+
+    @media (max-width: 720px) {
+      .container {
+        width: min(100% - 20px, 1100px);
+      }
+
+      header {
+        padding: 30px 0 26px;
+      }
+
+      .card,
+      .result-card {
+        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      header {
+        background: #fff;
+        color: #000;
+        padding: 0 0 16px;
+      }
+
+      .notice,
+      .progress-wrap,
+      #wizardCard,
+      .actions,
+      footer {
+        display: none !important;
+      }
+
+      .result-card {
+        box-shadow: none;
+        border: 1px solid #999;
+      }
+
+      .container {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Partners for Health Retiree Eligibility Guide</h1>
+      <p>Use this interactive tool for a preliminary review of retiree health coverage eligibility under the 2026 Local Education and Local Government Plan Documents.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="notice">
+      <strong>Important:</strong> This tool provides general guidance only. Benefits Administration and the applicable plan document determine official eligibility.
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressText">Step 1 of 1</span>
+        <span id="progressPercent">0%</span>
+      </div>
+      <div class="progress" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <section class="card" id="wizardCard" aria-live="polite">
+      <div id="stepContainer"></div>
+      <div class="actions">
+        <button type="button" class="btn-secondary" id="backBtn">Back</button>
+        <button type="button" class="btn-primary" id="nextBtn">Continue</button>
+        <button type="button" class="btn-outline" id="restartBtn">Start over</button>
+      </div>
+    </section>
+
+    <section id="resultSection" class="result-card hidden" aria-live="polite">
+      <div id="resultContent"></div>
+      <div class="actions">
+        <button type="button" class="btn-primary" onclick="window.print()">Print summary</button>
+        <button type="button" class="btn-secondary" id="editAnswersBtn">Review answers</button>
+        <button type="button" class="btn-outline" id="restartFromResultBtn">Start over</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    Based on the 2026 Local Education and Local Government Plan Documents, updated May 1, 2026.
+  </footer>
+
+  <script>
+    const state = {
+      path: [],
+      answers: {},
+      currentIndex: 0,
+      questions: []
+    };
+
+    const commonFinalQuestions = [
+      {
+        id: "medicare",
+        title: "Are you currently eligible for Medicare?",
+        help: "Medicare eligibility can affect whether you may remain enrolled in the retiree health plan.",
+        type: "radio",
+        options: [
+          { value: "no", label: "No" },
+          { value: "yes", label: "Yes" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      {
+        id: "applyOnTime",
+        title: "Will you submit your retiree health application within the required deadline?",
+        help: "Deadlines vary depending on whether you participate in TCRS.",
+        type: "radio",
+        options: [
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      }
+    ];
+
+    const baseQuestion = {
+      id: "employerType",
+      title: "Which type of employer are you retiring from?",
+      help: "Choose the plan that applies to your current employer.",
+      type: "radio",
+      options: [
+        {
+          value: "le",
+          label: "Local Education",
+          description: "A participating school system or local education agency"
+        },
+        {
+          value: "lg",
+          label: "Local Government",
+          description: "A participating county, city, utility district or qualifying local government organization"
+        }
+      ]
+    };
+
+    const localEducationQuestions = [
+      {
+        id: "pre2015",
+        title: "Did you first work for a qualifying Tennessee employer before July 1, 2015?",
+        help: "This may include qualifying employment with a participating local education agency, State agency or Higher Education institution.",
+        type: "radio",
+        options: [
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
+          { value: "exception", label: "Possibly — I had qualifying service before July 1, 2015, but later changed employers" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      {
+        id: "retirementType",
+        title: "Which retirement category best describes you?",
+        help: "Your retirement system affects how service and deadlines are reviewed.",
+        type: "radio",
+        options: [
+          { value: "tcrs", label: "I am vested in TCRS and expect a monthly retirement benefit" },
+          { value: "nonTcrs", label: "I am not retiring through TCRS" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      {
+        id: "serviceYears",
+        title: "How many years of qualifying employment do you have?",
+        help: "Qualifying service may include certain Local Education, State and Higher Education employment.",
+        type: "number",
+        min: 0,
+        max: 60
+      },
+      {
+        id: "continuousCoverage",
+        title: "Have you had continuous State Group Insurance Program coverage for the three years immediately before retirement?",
+        help: "The requirement may be waived if your agency has participated for fewer than three years.",
+        type: "radio",
+        options: [
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
+          { value: "agencyNew", label: "My agency has participated for fewer than three years" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      {
+        id: "dateAligned",
+        title: "Will your retirement date begin on or before your active coverage ends?",
+        help: "Your retirement and insurance dates should be coordinated to avoid a lapse.",
+        type: "radio",
+        options: [
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      ...commonFinalQuestions
+    ];
+
+    const localGovernmentQuestions = [
+      {
+        id: "agencyElection",
+        title: "Does your Local Government Agency offer retiree coverage?",
+        help: "Local Government Agencies may opt in, permanently opt out or choose a limited opt-out.",
+        type: "radio",
+        options: [
+          { value: "optIn", label: "Yes — my agency offers retiree coverage" },
+          { value: "optOut", label: "No — my agency permanently opted out" },
+          { value: "limited", label: "My agency selected a limited opt-out" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      {
+        id: "lgCategory",
+        title: "Which employee category best describes you?",
+        help: "Different eligibility combinations may apply.",
+        type: "radio",
+        options: [
+          { value: "tcrs", label: "Vested TCRS member" },
+          { value: "nonTcrs", label: "Non-TCRS participant" },
+          { value: "policeFire", label: "Police officer or firefighter in another retirement system" },
+          { value: "utilityBoard", label: "Utility board member" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      {
+        id: "age",
+        title: "What will your age be when you retire?",
+        type: "number",
+        min: 18,
+        max: 100
+      },
+      {
+        id: "serviceYears",
+        title: "How many years have you worked for the specific Local Government Agency from which you are retiring?",
+        help: "Service with another LGA, an LEA, the State or Higher Education generally does not count toward this requirement.",
+        type: "number",
+        min: 0,
+        max: 60
+      },
+      {
+        id: "coverageYears",
+        title: "How many continuous years of coverage will you have immediately before retirement?",
+        help: "Some eligibility paths require one year; others require three.",
+        type: "number",
+        min: 0,
+        max: 50
+      },
+      {
+        id: "dateAligned",
+        title: "Will retiree coverage begin immediately after your active coverage ends?",
+        help: "A lapse in coverage can affect eligibility.",
+        type: "radio",
+        options: [
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
+          { value: "unsure", label: "I am not sure" }
+        ]
+      },
+      ...commonFinalQuestions
+    ];
+
+    const stepContainer = document.getElementById("stepContainer");
+    const nextBtn = document.getElementById("nextBtn");
+    const backBtn = document.getElementById("backBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const wizardCard = document.getElementById("wizardCard");
+    const resultSection = document.getElementById("resultSection");
+    const resultContent = document.getElementById("resultContent");
+    const progressText = document.getElementById("progressText");
+    const progressPercent = document.getElementById("progressPercent");
+    const progressBar = document.getElementById("progressBar");
+
+    function initialize() {
+      state.answers = {};
+      state.currentIndex = 0;
+      state.questions = [baseQuestion];
+      resultSection.classList.add("hidden");
+      wizardCard.classList.remove("hidden");
+      renderStep();
+    }
+
+    function renderStep() {
+      const q = state.questions[state.currentIndex];
+      if (!q) return;
+
+      const saved = state.answers[q.id];
+
+      let html = `
+        <span class="step-label">Step ${state.currentIndex + 1}</span>
+        <h2>${q.title}</h2>
+        ${q.help ? `<p>${q.help}</p>` : ""}
+      `;
+
+      if (q.type === "radio") {
+        html += `<div class="options">`;
+        q.options.forEach(opt => {
+          html += `
+            <label class="option">
+              <input type="radio" name="${q.id}" value="${opt.value}" ${saved === opt.value ? "checked" : ""}>
+              <span>
+                <strong>${opt.label}</strong>
+                ${opt.description ? `<small>${opt.description}</small>` : ""}
+              </span>
+            </label>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      if (q.type === "number") {
+        html += `
+          <div class="field-row">
+            <div>
+              <label class="field-label" for="${q.id}">Enter a number</label>
+              <input type="number" id="${q.id}" min="${q.min}" max="${q.max}" value="${saved ?? ""}" />
+            </div>
+          </div>
+        `;
+      }
+
+      stepContainer.innerHTML = html;
+      backBtn.disabled = state.currentIndex === 0;
+      nextBtn.textContent = state.currentIndex === state.questions.length - 1 ? "View result" : "Continue";
+      updateProgress();
+    }
+
+    function saveCurrentAnswer() {
+      const q = state.questions[state.currentIndex];
+
+      if (q.type === "radio") {
+        const selected = document.querySelector(`input[name="${q.id}"]:checked`);
+        if (!selected) return false;
+        state.answers[q.id] = selected.value;
+      }
+
+      if (q.type === "number") {
+        const value = document.getElementById(q.id).value;
+        if (value === "" || Number(value) < q.min || Number(value) > q.max) return false;
+        state.answers[q.id] = Number(value);
+      }
+
+      if (q.id === "employerType") {
+        state.questions = [
+          baseQuestion,
+          ...(state.answers.employerType === "le" ? localEducationQuestions : localGovernmentQuestions)
+        ];
+      }
+
+      return true;
+    }
+
+    function updateProgress() {
+      const total = state.questions.length;
+      const current = state.currentIndex + 1;
+      const percent = Math.round((current / total) * 100);
+      progressText.textContent = `Step ${current} of ${total}`;
+      progressPercent.textContent = `${percent}%`;
+      progressBar.style.width = `${percent}%`;
+    }
+
+    function evaluateLocalEducation() {
+      const a = state.answers;
+      const issues = [];
+      const positives = [];
+      const unknowns = [];
+
+      if (a.pre2015 === "no") {
+        issues.push("Your qualifying employment appears to have begun on or after July 1, 2015.");
+      } else if (a.pre2015 === "yes" || a.pre2015 === "exception") {
+        positives.push("You may satisfy the pre-July 1, 2015 employment requirement.");
+      } else {
+        unknowns.push("Your original qualifying employment date needs to be confirmed.");
+      }
+
+      if (Number(a.serviceYears) >= 10) {
+        positives.push("You reported at least 10 years of qualifying employment.");
+      } else {
+        issues.push("You reported fewer than 10 years of qualifying employment.");
+      }
+
+      if (a.continuousCoverage === "yes" || a.continuousCoverage === "agencyNew") {
+        positives.push("You appear to satisfy, or may qualify for a waiver of, the continuous-coverage requirement.");
+      } else if (a.continuousCoverage === "no") {
+        issues.push("You may not satisfy the three-year continuous-coverage requirement.");
+      } else {
+        unknowns.push("Your continuous coverage history needs to be verified.");
+      }
+
+      if (a.dateAligned === "yes") {
+        positives.push("Your retirement and active coverage dates appear to be aligned.");
+      } else if (a.dateAligned === "no") {
+        issues.push("Your retirement date may not begin before active coverage ends.");
+      } else {
+        unknowns.push("Your retirement and coverage dates need to be confirmed.");
+      }
+
+      if (a.medicare === "yes") {
+        issues.push("Medicare eligibility generally prevents continued enrollment in the Local Education retiree health plan, subject to limited exceptions.");
+      } else if (a.medicare === "no") {
+        positives.push("You reported that you are not currently eligible for Medicare.");
+      } else {
+        unknowns.push("Your Medicare status needs to be confirmed.");
+      }
+
+      if (a.applyOnTime === "yes") {
+        positives.push("You expect to apply within the required deadline.");
+      } else if (a.applyOnTime === "no") {
+        issues.push("Missing the application deadline can affect eligibility.");
+      } else {
+        unknowns.push("Your application deadline needs to be confirmed.");
+      }
+
+      return buildResult("Local Education", issues, positives, unknowns);
+    }
+
+    function evaluateLocalGovernment() {
+      const a = state.answers;
+      const issues = [];
+      const positives = [];
+      const unknowns = [];
+
+      if (a.agencyElection === "optOut") {
+        issues.push("Your agency appears to have permanently opted out of retiree coverage.");
+      } else if (a.agencyElection === "limited") {
+        issues.push("A limited opt-out may prevent active employees from newly enrolling as retirees.");
+      } else if (a.agencyElection === "optIn") {
+        positives.push("Your agency appears to offer retiree coverage.");
+      } else {
+        unknowns.push("Your agency's retiree coverage election needs to be confirmed.");
+      }
+
+      const age = Number(a.age);
+      const service = Number(a.serviceYears);
+      const coverage = Number(a.coverageYears);
+      let categoryEligible = false;
+
+      if (a.lgCategory === "tcrs") {
+        categoryEligible = age >= 55 && service >= 10 && coverage >= 3;
+        if (categoryEligible) {
+          positives.push("Your reported age, service and coverage meet the standard TCRS Local Government path.");
+        } else {
+          issues.push("Your reported age, service or coverage may not meet the standard TCRS Local Government path.");
+        }
+      } else if (a.lgCategory === "nonTcrs") {
+        categoryEligible =
+          (age >= 55 && service >= 10 && coverage >= 3) ||
+          (age >= 55 && service >= 20 && coverage >= 1) ||
+          (service >= 30 && coverage >= 1);
+        if (categoryEligible) {
+          positives.push("Your reported age, service and coverage match at least one non-TCRS eligibility path.");
+        } else {
+          issues.push("Your reported age, service and coverage do not appear to match a standard non-TCRS path.");
+        }
+      } else if (a.lgCategory === "policeFire") {
+        categoryEligible = age >= 50 && service >= 25 && coverage >= 1;
+        if (categoryEligible) {
+          positives.push("Your reported age, service and coverage match the police/firefighter path, subject to agency resolution and retirement-system requirements.");
+        } else {
+          issues.push("Your reported age, service or coverage may not meet the police/firefighter path.");
+        }
+      } else if (a.lgCategory === "utilityBoard") {
+        categoryEligible =
+          (age >= 55 && service >= 20 && coverage >= 1) ||
+          (service >= 30 && coverage >= 1);
+        if (categoryEligible) {
+          positives.push("Your reported age, service and coverage match a utility board member path.");
+        } else {
+          issues.push("Your reported age, service or coverage may not meet a utility board member path.");
+        }
+      } else {
+        unknowns.push("Your employee category needs to be confirmed.");
+      }
+
+      if (a.dateAligned === "yes") {
+        positives.push("You expect retiree coverage to begin immediately after active coverage ends.");
+      } else if (a.dateAligned === "no") {
+        issues.push("A gap between active and retiree coverage may affect eligibility.");
+      } else {
+        unknowns.push("Your coverage transition dates need to be confirmed.");
+      }
+
+      if (a.medicare === "yes") {
+        issues.push("Medicare eligibility generally prevents continued enrollment in the Local Government retiree health plan, subject to limited exceptions.");
+      } else if (a.medicare === "no") {
+        positives.push("You reported that you are not currently eligible for Medicare.");
+      } else {
+        unknowns.push("Your Medicare status needs to be confirmed.");
+      }
+
+      if (a.applyOnTime === "yes") {
+        positives.push("You expect to apply within the required deadline.");
+      } else if (a.applyOnTime === "no") {
+        issues.push("Missing the application deadline can affect eligibility.");
+      } else {
+        unknowns.push("Your application deadline needs to be confirmed.");
+      }
+
+      return buildResult("Local Government", issues, positives, unknowns);
+    }
+
+    function buildResult(planName, issues, positives, unknowns) {
+      let statusClass = "success";
+      let statusText = "Likely eligible";
+      let heading = "Your answers indicate that you may be eligible.";
+
+      if (issues.length > 0) {
+        statusClass = "danger";
+        statusText = "Eligibility concern";
+        heading = "One or more answers may prevent eligibility.";
+      } else if (unknowns.length > 0) {
+        statusClass = "warning";
+        statusText = "Needs confirmation";
+        heading = "Your eligibility cannot be confirmed from these answers alone.";
+      }
+
+      const answerRows = Object.entries(state.answers)
+        .filter(([key]) => key !== "employerType")
+        .map(([key, value]) => `<li><strong>${formatKey(key)}:</strong> ${formatValue(value)}</li>`)
+        .join("");
+
+      return `
+        <span class="status ${statusClass}">${statusText}</span>
+        <h2>${heading}</h2>
+        <p><strong>Plan reviewed:</strong> ${planName}</p>
+
+        ${positives.length ? `
+          <h3>Factors supporting eligibility</h3>
+          <ul class="summary-list">${positives.map(item => `<li>${item}</li>`).join("")}</ul>
+        ` : ""}
+
+        ${issues.length ? `
+          <h3>Potential eligibility barriers</h3>
+          <ul class="summary-list">${issues.map(item => `<li>${item}</li>`).join("")}</ul>
+        ` : ""}
+
+        ${unknowns.length ? `
+          <h3>Items requiring confirmation</h3>
+          <ul class="summary-list">${unknowns.map(item => `<li>${item}</li>`).join("")}</ul>
+        ` : ""}
+
+        <div class="next-steps">
+          <h3>Recommended next steps</h3>
+          <ol class="summary-list">
+            <li>Contact your Agency Benefits Coordinator before finalizing your retirement date.</li>
+            <li>Confirm your qualifying service, continuous coverage and agency participation status.</li>
+            <li>Coordinate your last day of employment, active coverage end date and retirement effective date.</li>
+            <li>Submit all retirement and retiree insurance paperwork by the applicable deadline.</li>
+            <li>Request written confirmation of your retiree coverage effective date, dependents, premium and payment method.</li>
+          </ol>
+        </div>
+
+        <div class="inline-note">
+          <strong>Your answers</strong>
+          <ul class="summary-list">${answerRows}</ul>
+        </div>
+
+        <div class="inline-note">
+          This is a preliminary educational result. The applicable plan document and Benefits Administration's official determination control.
+        </div>
+      `;
+    }
+
+    function formatKey(key) {
+      const labels = {
+        pre2015: "Pre-July 1, 2015 service",
+        retirementType: "Retirement category",
+        serviceYears: "Years of service",
+        continuousCoverage: "Continuous coverage",
+        dateAligned: "Coverage dates aligned",
+        medicare: "Medicare eligible",
+        applyOnTime: "Apply by deadline",
+        agencyElection: "Agency retiree election",
+        lgCategory: "Employee category",
+        age: "Retirement age",
+        coverageYears: "Years of continuous coverage"
+      };
+      return labels[key] || key;
+    }
+
+    function formatValue(value) {
+      const map = {
+        yes: "Yes",
+        no: "No",
+        unsure: "Not sure",
+        exception: "Possible exception",
+        tcrs: "Vested TCRS member",
+        nonTcrs: "Non-TCRS participant",
+        agencyNew: "Agency participated fewer than three years",
+        optIn: "Agency offers retiree coverage",
+        optOut: "Agency permanently opted out",
+        limited: "Agency selected limited opt-out",
+        policeFire: "Police officer or firefighter",
+        utilityBoard: "Utility board member"
+      };
+      return map[value] ?? value;
+    }
+
+    function showResult() {
+      const html = state.answers.employerType === "le"
+        ? evaluateLocalEducation()
+        : evaluateLocalGovernment();
+
+      resultContent.innerHTML = html;
+      wizardCard.classList.add("hidden");
+      resultSection.classList.remove("hidden");
+      progressText.textContent = "Complete";
+      progressPercent.textContent = "100%";
+      progressBar.style.width = "100%";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (!saveCurrentAnswer()) {
+        alert("Please select or enter an answer before continuing.");
+        return;
+      }
+
+      if (state.currentIndex < state.questions.length - 1) {
+        state.currentIndex++;
+        renderStep();
+      } else {
+        showResult();
       }
     });
 
-    csv += rowData.join(",") + "\n";
-  });
+    backBtn.addEventListener("click", () => {
+      if (state.currentIndex > 0) {
+        state.currentIndex--;
+        renderStep();
+      }
+    });
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
+    restartBtn.addEventListener("click", initialize);
+    document.getElementById("restartFromResultBtn").addEventListener("click", initialize);
 
-  link.href = URL.createObjectURL(blob);
-  link.download = "premium-estimate.csv";
-  link.click();
-}
+    document.getElementById("editAnswersBtn").addEventListener("click", () => {
+      resultSection.classList.add("hidden");
+      wizardCard.classList.remove("hidden");
+      state.currentIndex = state.questions.length - 1;
+      renderStep();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
-function printResults() {
-  const hasResults = document.querySelector("#resultsTable tbody").rows.length > 0;
-
-  if (!hasResults) {
-    setMessage("Add at least one group before printing or saving as a PDF.");
-    return;
-  }
-
-  window.print();
-}
-</script>
+    initialize();
+  </script>
 </body>
 </html>
+"""
+
+path = Path("/mnt/data/partners_for_health_retiree_eligibility_tool.html")
+path.write_text(html, encoding="utf-8")
+print(path)
